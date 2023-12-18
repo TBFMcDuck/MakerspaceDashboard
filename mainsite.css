@@ -1,0 +1,8 @@
+html {
+    scroll-behavior: smooth;
+  }
+  
+.gif {
+    width: 30%;
+    place-items: left;
+}
