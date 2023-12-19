@@ -6,3 +6,6 @@ html {
     width: 30%;
     place-items: left;
 }
+.sortable:hover {
+    cursor: pointer;
+}
