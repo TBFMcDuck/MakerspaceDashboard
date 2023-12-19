@@ -4,32 +4,63 @@
         <title>Makerspace Dashboard</title>
         <link type="text/css" href="mainsite.css" rel="stylesheet">
         <style>
-            table {
-              font-family: arial, sans-serif;
-              border-collapse: collapse;
-              width: 100%;
-            }
-            
-            td, th {
-              border: 1px solid #dddddd;
-              border-color: rgb(45, 45, 45);
-              text-align: left;
-              padding: 8px;
-            }
-            
-            tr:nth-child(even) {
-              background-color: #dddddd;
-            }
             .sortable:hover {
                 cursor: pointer;
             }
             .sortable {
                 cursor: pointer;
-                background-color: #ddd;
+                background-color: #3d3d3d;
                 border: 1px solid #ccc;
                 padding: 2px 5px;
                 border-radius: 5px;
                 transition: background-color 0.3s ease;
+            }
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f0f0f0;
+            }
+
+            h1 {
+                background-color: #333;
+                color: #fff;
+                padding: 10px 0;
+                text-align: center;
+            }
+
+            #printerTable {
+                width: 100%;
+                margin-top: 20px;
+                border-collapse: collapse;
+            }
+
+            #printerTable th, #printerTable td {
+                border: 1px solid #292929;
+                padding: 8px;
+                text-align: left;
+            }
+            
+            #printerTable tr:nth-child(even) {
+                background-color: #c5c4c4;
+            }
+
+            #printerTable th {
+                background-color: #4CAF50;
+                color: white;
+            }
+
+            #loading {
+                display: none;
+                text-align: center;
+                padding: 10px 0;
+            }
+
+            #searchInput {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                box-sizing: border-box;
             }
         </style>
         <script>
@@ -55,88 +86,96 @@
               }
             }
             function sortTable(n) {
-  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-  table = document.getElementById("printerTable");
-  switching = true;
-  // Set the sorting direction to ascending:
-  dir = "asc"; 
-  /* Make a loop that will continue until
-  no switching has been done: */
-  while (switching) {
-    // Start by saying: no switching is done:
-    switching = false;
-    rows = table.rows;
-    /* Loop through all table rows (except the
-    first, which contains table headers): */
-    for (i = 1; i < (rows.length - 1); i++) {
-      // Start by saying there should be no switching:
-      shouldSwitch = false;
-      /* Get the two elements you want to compare,
-      one from current row and one from the next: */
-      x = rows[i].getElementsByTagName("TD")[n];
-      y = rows[i + 1].getElementsByTagName("TD")[n];
-      /* Check if the two rows should switch place,
-      based on the direction, asc or desc: */
-      if (dir == "asc") {
-        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-          // If so, mark as a switch and break the loop:
-          shouldSwitch = true;
-          break;
-        }
-      } else if (dir == "desc") {
-        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-          // If so, mark as a switch and break the loop:
-          shouldSwitch = true;
-          break;
-        }
-      }
-    }
-    if (shouldSwitch) {
-      /* If a switch has been marked, make the switch
-      and mark that a switch has been done: */
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-      // Each time a switch is done, increase this count by 1:
-      switchcount ++; 
-    } else {
-      /* If no switching has been done AND the direction is "asc",
-      set the direction to "desc" and run the while loop again. */
-      if (switchcount == 0 && dir == "asc") {
-        dir = "desc";
-        switching = true;
-      }
-    }
-  }
-}
+                var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+                table = document.getElementById("printerTable");
+                switching = true;
+                // Set the sorting direction to ascending:
+                dir = "asc"; 
+                /* Make a loop that will continue until
+                no switching has been done: */
+                while (switching) {
+                    // Start by saying: no switching is done:
+                    switching = false;
+                    rows = table.rows;
+                    /* Loop through all table rows (except the
+                    first, which contains table headers): */
+                    for (i = 1; i < (rows.length - 1); i++) {
+                    // Start by saying there should be no switching:
+                    shouldSwitch = false;
+                    /* Get the two elements you want to compare,
+                    one from current row and one from the next: */
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+                    /* Check if the two rows should switch place,
+                    based on the direction, asc or desc: */
+                    if (dir == "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        // If so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                        }
+                    } else if (dir == "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        // If so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                        }
+                    }
+                    }
+                    if (shouldSwitch) {
+                    /* If a switch has been marked, make the switch
+                    and mark that a switch has been done: */
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    // Each time a switch is done, increase this count by 1:
+                    switchcount ++; 
+                    } else {
+                    /* If no switching has been done AND the direction is "asc",
+                    set the direction to "desc" and run the while loop again. */
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                    }
+                }
+                }
+                window.onload = function() {
+                    document.getElementById('loading').style.display = 'block';
+                    fetch('printers.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        var table = document.getElementById('printerTable');
+                        data.forEach(item => {
+                            var row = table.insertRow(-1);
+                            var cell1 = row.insertCell(0);
+                            var cell2 = row.insertCell(1);
+                            var cell3 = row.insertCell(2);
+                            var cell4 = row.insertCell(3);
+                            cell1.innerHTML = item.name;
+                            cell2.innerHTML = item.type;
+                            cell3.innerHTML = '<a href="' + item.address + '" target="_blank">' + item.address + '</a>';
+                            cell4.innerHTML = item.status;
+                            // Hide loading text
+                            document.getElementById('loading').style.display = 'none';
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        // Hide loading text
+                        document.getElementById('loading').style.display = 'none';
+                    });
+                }
         </script>
     </head>
     <body>
         <hr>
         <h1>Makerspace Dashboard</h1>
         <hr>
-        <h2 style="text-decoration: underline;">3D Printere (Brukernavn: Makerspace, Passord: user)</h2>
-        <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search for printers..">
+        <h2 style="text-decoration: underline; padding-left: 1%;">3D Printere (Brukernavn: Makerspace, Passord: user)</h2>
+        <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search for printers...">
         <table id="printerTable">
             <tr><th>Navn <span class="sortable" onclick="sortTable(0)">&darr;</span></th><th>Type <span class="sortable" onclick="sortTable(1)">&darr;</span></th><th>Adresse <span class="sortable" onclick="sortTable(2)">&darr;</span></th><th>Status <span class="sortable" onclick="sortTable(3)">&darr;</span></th></tr>
-            <tr><td>400</td><td>Ender 3</td><td><a href = "http://192.168.3.103:5002/" target="_blank">http://192.168.3.103:5002/</a></td><td>Not programmed yet</td></tr>
-            <tr><td>Forrest Gump</td><td>Ender 3</td><td><a href = "http://192.168.3.103:5003/" target="_blank">http://192.168.3.103:5003/</a></td><td>Not programmed yet</td></tr>
-            <tr><td>Katniss</td><td>Ender 3</td><td><a href = "http://192.168.3.105:5000/" target="_blank">http://192.168.3.105:5000/</a></td><td>Not programmed yet</td></tr>
-            <tr><td>The Godfather</td><td>Ender 3</td><td><a href = "http://192.168.3.102:5003/" target="_blank">http://192.168.3.102:5003/</a></td><td>Not programmed yet</td></tr>
-            <tr><td>Tritonus</td><td>Ender 3</td><td><a href = "http://192.168.3.104:5000/" target="_blank">http://192.168.3.104:5000/</a></td><td>Not programmed yet</td></tr>
-            <tr><td>Lost</td><td>Ender 3</td><td><a href = "http://192.168.3.105:5001/" target="_blank">http://192.168.3.105:5001/</a></td><td>Not programmed yet</td></tr>
-            <tr><td>Darth vader</td><td>Ender 3</td><td><a href = "http://192.168.3.104:5002/" target="_blank">http://192.168.3.104:5002/</a></td><td>Not programmed yet</td></tr>
-            <tr><td>Tik</td><td>Ender 3</td><td><a href = "http://192.168.3.105:5002/" target="_blank">http://192.168.3.105:5002/</a></td><td>Not programmed yet</td></tr>
-            <tr><td>Spark</td><td>Ender 3</td><td><a href = "" target="_blank"></a></td><td>Ip not found</td></tr>
-            <tr><td>Toad</td><td>Ender 3</td><td><a href = "http://192.168.3.104:5001/" target="_blank">http://192.168.3.104:5001/</a></td><td>Not programmed yet</td></tr>
-            <tr><td>C-3PO</td><td>Ender 3</td><td><a href = "http://192.168.3.104:5003/" target="_blank">http://192.168.3.104:5003/</a></td><td>Not programmed yet</td></tr>
-            <tr><td>Luke</td><td>Ender 3</td><td><a href = "http://192.168.3.110:5000/" target="_blank">http://192.168.3.110:5000/</a></td><td>Not programmed yet</td></tr>
-            <tr><td>RGB</td><td>Ender 3</td><td><a href = "http://192.168.3.110:5002/" target="_blank">http://192.168.3.110:5002/</a></td><td>Not programmed yet</td></tr>
-            <tr><td>Baymax</td><td>Ender 3</td><td><a href = "http://192.168.3.110:5001/?" target="_blank">http://192.168.3.110:5001/?</a></td><td>Not programmed yet</td></tr>
-            <tr><td>Bulbasaur</td><td>Ender 3 V2</td><td><a href = "http://192.168.3.103:5000/" target="_blank">http://192.168.3.103:5000/</a></td><td>Not programmed yet</td></tr>
-            <tr><td>Turnip head</td><td>Ender 3 V2</td><td><a href = "http://192.168.3.102:5000/" target="_blank">http://192.168.3.102:5000/</a></td><td>Not programmed yet</td></tr>
-            <tr><td>Roger</td><td>Ender 3 V2</td><td><a href = "http://192.168.3.102:5001/" target="_blank">http://192.168.3.102:5001/</a></td><td>Not programmed yet</td></tr>
-            <tr><td>Timtim</td><td>Ender 3 V2</td><td><a href = "http://192.168.3.103:5001/" target="_blank">http://192.168.3.103:5001/</a></td><td>Not programmed yet</td></tr>
-            <tr><td>Tak</td><td>Ender 3 V2</td><td><a href = "http://192.168.3.102:5002/" target="_blank">http://192.168.3.102:5002/</a></td><td>Not programmed yet</td></tr>
         </table>
+        <div id="loading">Fetching printer data...</div>
     </body>
 </html>

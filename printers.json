@@ -1,0 +1,116 @@
+[
+    {
+        "name": "400",
+        "type": "Ender 3",
+        "address": "http://192.168.3.103:5002/",
+        "status": "Not programmed yet"
+    },
+    {
+        "name": "Forrest Gump",
+        "type": "Ender 3",
+        "address": "http://192.168.3.103:5003/",
+        "status": "Not programmed yet"
+    },
+    {
+        "name": "Katniss",
+        "type": "Ender 3",
+        "address": "http://192.168.3.105:5000/",
+        "status": "Not programmed yet"
+    },
+    {
+        "name": "The Godfather",
+        "type": "Ender 3",
+        "address": "http://192.168.3.102:5003/",
+        "status": "Not programmed yet"
+    },
+    {
+        "name": "Tritonus",
+        "type": "Ender 3",
+        "address": "http://192.168.3.104:5000/",
+        "status": "Not programmed yet"
+    },
+    {
+        "name": "Lost",
+        "type": "Ender 3",
+        "address": "http://192.168.3.105:5001/",
+        "status": "Not programmed yet"
+    },
+    {
+        "name": "Darth vader",
+        "type": "Ender 3",
+        "address": "http://192.168.3.104:5002/",
+        "status": "Not programmed yet"
+    },
+    {
+        "name": "Tik",
+        "type": "Ender 3",
+        "address": "http://192.168.3.105:5002/",
+        "status": "Not programmed yet"
+    },
+    {
+        "name": "Spark",
+        "type": "Ender 3",
+        "address": "",
+        "status": "Ip not found"
+    },
+    {
+        "name": "Toad",
+        "type": "Ender 3",
+        "address": "http://192.168.3.104:5001/",
+        "status": "Not programmed yet"
+    },
+    {
+        "name": "C-3PO",
+        "type": "Ender 3",
+        "address": "http://192.168.3.104:5003/",
+        "status": "Not programmed yet"
+    },
+    {
+        "name": "Luke",
+        "type": "Ender 3",
+        "address": "http://192.168.3.110:5000/",
+        "status": "Not programmed yet"
+    },
+    {
+        "name": "RGB",
+        "type": "Ender 3",
+        "address": "http://192.168.3.110:5002/",
+        "status": "Not programmed yet"
+    },
+    {
+        "name": "Baymax",
+        "type": "Ender 3",
+        "address": "http://192.168.3.110:5001/?",
+        "status": "Not programmed yet"
+    },
+    {
+        "name": "Bulbasaur",
+        "type": "Ender 3 V2",
+        "address": "http://192.168.3.103:5000/",
+        "status": "Not programmed yet"
+    },
+    {
+        "name": "Turnip head",
+        "type": "Ender 3 V2",
+        "address": "http://192.168.3.102:5000/",
+        "status": "Not programmed yet"
+    },
+    {
+        "name": "Roger",
+        "type": "Ender 3 V2",
+        "address": "http://192.168.3.102:5001/",
+        "status": "Not programmed yet"
+    },
+    {
+        "name": "Timtim",
+        "type": "Ender 3 V2",
+        "address": "http://192.168.3.103:5001/",
+        "status": "Not programmed yet"
+    },
+    {
+        "name": "Tak",
+        "type": "Ender 3 V2",
+        "address": "http://192.168.3.102:5002/",
+        "status": "Not programmed yet"
+    }
+]
