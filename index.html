@@ -95,7 +95,7 @@
         <hr>
         <h1>Makerspace Dashboard</h1>
         <hr>
-        <h2 style="text-decoration: underline; padding-left: 1%;">3D Printere (Brukernavn: Makerspace, Passord: user)</h2>
+        <h2 style="text-decoration: underline; padding-left: 1%;">3D Printere</h2>
         <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search for printers...">
         <table id="printerTable">
             <thead id="printerTableHeader">
@@ -108,7 +108,11 @@
             </tbody>
         </table>
         <div id="loading" style="display: block;">(Fetching printer data...)</div>
-        
+
+        <footer>
+            <hr>
+            <p style="text-align: center; font-size: 9px;">Laget av <a href="https://tbf3d.com", target = "_blank">Trym</a></p>
+
         <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
         <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 
