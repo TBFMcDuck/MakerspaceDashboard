@@ -9,3 +9,107 @@ html {
 .sortable:hover {
     cursor: pointer;
 }
+
+.sortable:hover {
+    cursor: pointer;
+}
+.sortable {
+    cursor: pointer;
+    background-color: #3d3d3d;
+    border: 1px solid #ccc;
+    padding: 2px 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+#refreshButton:hover{
+    cursor: pointer;
+}
+#refreshButton {
+    cursor: pointer;
+    padding: 2px 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+h1 {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+#printerTable {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+#printerTable th, #printerTable td {
+    border: 1px solid #292929;
+    padding: 8px;
+    text-align: left;
+}
+
+#printerTable tr:nth-child(even) {
+    background-color: #c5c4c4;
+}
+
+#printerTable th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#loading {
+    display: none;
+    text-align: center;
+    padding: 10px 0;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+.status-cell {
+    position: relative;
+}
+
+.status-progress {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    border-radius: 0;
+    height: 10%;
+}
+#printerTable th:nth-child(4) {
+    width: 20%; /* Adjust this value as needed */
+}
+
+.tooltip {
+    cursor: pointer;
+}
+
+.curaDownloadBTN {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.curaDownloadBTN:hover {
+    background-color: #45a049;
+}

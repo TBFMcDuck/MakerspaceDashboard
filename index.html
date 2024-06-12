@@ -2,101 +2,19 @@
 <html>
     <head>
         <title>Makerspace Dashboard</title>
-        <link type="text/css" href="mainsite.css" rel="stylesheet">
-        <style>
-            .sortable:hover {
-                cursor: pointer;
-            }
-            .sortable {
-                cursor: pointer;
-                background-color: #3d3d3d;
-                border: 1px solid #ccc;
-                padding: 2px 5px;
-                border-radius: 5px;
-                transition: background-color 0.3s ease;
-            }
-            #refreshButton:hover{
-                cursor: pointer;
-            }
-            #refreshButton {
-                cursor: pointer;
-                padding: 2px 5px;
-                border-radius: 5px;
-                transition: background-color 0.3s ease;
-            }
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-                background-color: #f0f0f0;
-            }
-
-            h1 {
-                background-color: #333;
-                color: #fff;
-                padding: 10px 0;
-                text-align: center;
-            }
-
-            #printerTable {
-                width: 100%;
-                margin-top: 20px;
-                border-collapse: collapse;
-            }
-
-            #printerTable th, #printerTable td {
-                border: 1px solid #292929;
-                padding: 8px;
-                text-align: left;
-            }
-            
-            #printerTable tr:nth-child(even) {
-                background-color: #c5c4c4;
-            }
-
-            #printerTable th {
-                background-color: #4CAF50;
-                color: white;
-            }
-
-            #loading {
-                display: none;
-                text-align: center;
-                padding: 10px 0;
-            }
-
-            #searchInput {
-                width: 100%;
-                padding: 12px 20px;
-                margin: 8px 0;
-                box-sizing: border-box;
-            }
-            .status-cell {
-                position: relative;
-            }
-
-            .status-progress {
-                position: absolute;
-                bottom: 0;
-                width: 100%;
-                border-radius: 0;
-                height: 10%;
-            }
-            #printerTable th:nth-child(4) {
-                width: 20%; /* Adjust this value as needed */
-            }
-
-            .tooltip {
-                cursor: pointer;
-            }
-        </style>
+        <link type="text/css" href="mainsite.css" rel="stylesheet"> 
     </head>
     <body>
         <hr>
         <h1>Makerspace Dashboard</h1>
         <hr>
-        <h2 style="text-decoration: underline; padding-left: 1%;">3D Printere</h2>
-        <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search for printers...">
+        <h2 style="text-decoration: underline; padding-left: 1%;">3D Printere</h2>  
+        <p style="padding-left: 1%;">Her kan du se statusen til de fleste av 3D printerne på Elvebakken VGSs skaperversted!</p>
+        <p style="padding-left: 1%;">For å kunne bruke dem må du koble deg til 3D-printer wifi netverket med <span style="font-weight: bold;">passord: 'Skaperverksted'</span><p>
+        <p style="padding-left: 1%;">Så kan du gå inn på en av adressene under for å begynne å bruke Octoprint. Octoprint innlogging: <span style="font-weight: bold;">Brukernavn: 'Makerspace' Passord: 'user'</span></p>
+        <a href="oppsetcura">Hvordan sette opp Cura for enda enklere printing med Octoprint.</a>
+        
+        <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Søk etter printer...">
         <table id="printerTable">
             <thead id="printerTableHeader">
             <tr><th>Navn <span class="sortable" onclick="sortTable(0)">&darr;</span></th>
@@ -108,7 +26,6 @@
             </tbody>
         </table>
         <div id="loading" style="display: block;">(Fetching printer data...)</div>
-
         <footer>
             <hr>
             <p style="text-align: center; font-size: 9px;">Laget av <a href="https://tbf3d.com", target = "_blank">Trym</a></p>
@@ -134,7 +51,7 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         </script>
-        <script> 
+        <script>    
             function searchFunction() {
               // Declare variables
               var input, filter, table, tr, td, i, txtValue;
