@@ -5,16 +5,19 @@
         <link type="text/css" href="mainsite.css" rel="stylesheet"> 
     </head>
     <body>
+        <script src="mainsite.js" defer></script>
         <hr>
         <h1>Makerspace Dashboard</h1>
         <hr>
-        <h2 style="text-decoration: underline; padding-left: 1%;">3D Printere</h2>  
-        <p style="padding-left: 1%;">Her kan du se statusen til de fleste av 3D printerne på Elvebakken VGSs skaperversted!</p>
-        <p style="padding-left: 1%;">Du kan også bruke octofarm til å se status på printeren: <a href="http://192.168.3.101:3069/" target="_blank">http://192.168.3.101:3069/</a></p>
-        <p style="padding-left: 1%;">For å kunne bruke dem må du koble deg til 3D-printer wifi netverket<p>
-        <p style="padding-left: 1%;">Så kan du gå inn på en av adressene under for å begynne å bruke Octoprint. Octoprint innlogging: <span style="font-weight: bold;">Brukernavn: 'Makerspace' Passord: 'user'</span></p>
-        <a href="oppsetcura">Hvordan sette opp Cura for enda enklere printing med Octoprint.</a>
-        
+        <h2 style="text-decoration: underline; padding-left: 1%; display: inline;">Oppsett</h2><button style="display: inline; margin-left:2%;" id="oppsettButton">Vis &darr;</button> 
+        <span id="oppsett" style="display:none;">
+            <p style="padding-left: 1%;">Her kan du se statusen til de fleste av 3D printerne på Elvebakken VGSs skaperversted!</p>
+            <p style="padding-left: 1%;">Du kan også bruke octofarm til å se status på printeren: <a href="http://192.168.3.101:3069/" target="_blank">http://192.168.3.101:3069/</a></p>
+            <p style="padding-left: 1%;">For å kunne bruke dem må du koble deg til 3D-printer wifi netverket.<p>
+            <p style="padding-left: 1%;">Så kan du gå inn på en av adressene under for å begynne å bruke Octoprint. Octoprint innlogging: <span style="font-weight: bold;">Brukernavn: 'Makerspace' Passord: 'user'</span></p>
+            <a href="oppsetcura" style="padding-left: 1%;">Hvordan sette opp Cura for enda enklere printing med Octoprint.</a>
+        </span>
+        <h2 style="text-decoration: underline; padding-left: 1%;">3D Printere</h2> 
         <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Søk etter printer...">
         <table id="printerTable">
             <thead id="printerTableHeader">
