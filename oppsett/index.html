@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Makerspace Dashboard: Oppsett</title>
+        <link type="text/css" href="../mainsite.css" rel="stylesheet"> 
+        <!-- Add Font Awesome CDN link -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    </head>
+    <body>
+        <script src="../js/sitewide.js" defer></script>
+
+        <hr>
+        <div class = "topnav">
+            <nav>
+                <div class="topnav-content">
+                    <button class="hamburger-menu" onclick="toggleMenu()">&#9776;</button>
+                    <a id = "mobiletitle" class = "navelement selected" href="/">Makerspace Dashboard</a>
+                </div>
+                <ul class = "navbar">
+                    <li><a class = "navelement" href="/oppsett">Oppsett</a></li>
+                    <li><a class = "navelement" href="/cura">Cura</a></li>
+                    <li><a id = "title" class = "navelement selected" href="/">Makerspace Dashboard</a></li>
+                    <li><a class = "navelement" id = "octofarmButton" href="http://192.168.3.101:3069/" target="_blank">Octofarm <i class="fas fa-external-link-alt"></i></a></li>
+                </ul>
+            </nav>
+        </div>
+        <hr>
+
+        <!--Oppsett-->
+        <div style="padding-left: 1%;">
+        <h2 style="text-decoration: underline;">Oppsett</h2>
+        <p>For å kunne printe tråløst må du koble deg til 3D-printer wifinettverket, passordet til dette kan du skaffe fra en lærer/ansatt til skaperverkstedet.<p>
+        <p>Så klikker du på en av linkene i dashboard tabbet for å begynne å bruke Octoprint.</p>
+        <p>Innlogging Octoprint: <span style="font-weight: bold;">Brukernavn: 'Makerspace' Passord: 'user'</span></p>
+        </div>
+
+        <!--Footer-->
+        <footer>
+            <hr>
+            <p style="text-align: center; font-size: 9px;">Laget av <a href="https://tbf3d.com", target = "_blank">Trym</a></p>
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en"></html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Makerspace Dashboard: Cura</title>
+        <link type="text/css" href="../mainsite.css" rel="stylesheet"> 
+        <link type="text/css" href="cura.css" rel="stylesheet">
+        <!-- Add Font Awesome CDN link -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    </head>
+    <body>
+        <script src="../js/sitewide.js" defer></script>
+
+        <hr>
+        <div class = "topnav">
+            <nav>
+                <div class="topnav-content">
+                    <button class="hamburger-menu" onclick="toggleMenu()">&#9776;</button>
+                    <a id = "mobiletitle" class = "navelement selected" href="/">Makerspace Dashboard</a>
+                </div>
+                <ul class = "navbar">
+                    <li><a class = "navelement" href="/oppsett">Oppsett</a></li>
+                    <li><a class = "navelement" href="/cura">Cura</a></li>
+                    <li><a id = "title" class = "navelement selected" href="/">Makerspace Dashboard</a></li>
+                    <li><a class = "navelement" id = "octofarmButton" href="http://192.168.3.101:3069/" target="_blank">Octofarm <i class="fas fa-external-link-alt"></i></a></li>
+                </ul>
+            </nav>
+        </div>
+        <hr>
+
+        <h2 style="text-decoration: underline; padding-left: 1%;" id="undertitle">Cura printer profiler</h2>
+
+        <p style="padding-left: 1%;">Her kan du laste ned set med Ultimaker Cura print profiler til skaperverkstedets 3D-printere.</p>
+        
+        <a class="curaDownloadBTN" href="../curaPrinterProfiler/4.7.zip" download style="margin-left: 1%;">
+            <i class="fas fa-download"></i> Cura 4.7
+        </a>
+        <a class="curaDownloadBTN" href="../curaPrinterProfiler/5.4.zip" download>
+            <i class="fas fa-download"></i> Cura 5.4
+        </a>
+        <a class="curaDownloadBTN" href="../curaPrinterProfiler/5.5.zip" download>
+            <i class="fas fa-download"></i> Cura 5.5
+        </a>
+        <a class="curaDownloadBTN" href="../curaPrinterProfiler/5.6.zip" download>
+            <i class="fas fa-download"></i> Cura 5.6
+        </a>
+        
+        <hr>
+        <div style="padding-left: 1%;">
+            <p>For å bruke dem start med å laste ned og installere <a href="https://ultimaker.com/software/ultimaker-cura/" target="_blank">Cura</a>.</p>
+            <p>Så søker du etter '%appdata%' og åpner den mappa.</p>
+            <img src="../assets/imgs/appdata.png" alt="appdata" class="expIMG">
+            
+            <p>Gå så inn i mappen med navnet 'cura'. Inne i cura mappa skal det være mapper til hver av cura versjonene du har installert, i dette tilfelle er versjon 5.5 og 5.6 installert.</p>
+            <img src="../assets/imgs/curafolder.png" alt="curaFolder" class="expIMG">
+            
+            <p >Pakk ut zip filen du lastet ned i sted <a style = "color: black" href="#undertitle">(knappene ovenfor)</a> og bytt ut mappen med samme navn (versjon) i cura mappa.<br>Eksempel: Skulle jeg brukt cura versjon 5.5 ville jeg slettet mappen med navn '5.5', for og så flytte mappen jeg lastet ned og pakket ut inn i cura mappa.</p>
+
+            <p style="color: red; font-weight: bolder;">NB: Sørg for at Cura er lukket imens du sletter og bytter på filenen!</p> 
+
+            <p>Når du har gjort dette kan du starte cura og velge en av printerne fra listen.</p>
+
+            <img src="../assets/imgs/printere.png" alt="cura" class="expIMG">
+        </div>
+
+        <footer>
+            <hr>
+            <p style="text-align: center; font-size: 9px;">Laget av <a href="https://tbf3d.com", target = "_blank">Trym</a></p>
+        </footer>
+
+    </body>
+</html>

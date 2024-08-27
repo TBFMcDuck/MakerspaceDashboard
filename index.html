@@ -1,38 +1,52 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Makerspace Dashboard</title>
         <link type="text/css" href="mainsite.css" rel="stylesheet"> 
+        <!-- Add Font Awesome CDN link -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     </head>
     <body>
-        <script src="mainsite.js" defer></script>
-        <hr>
-        <h1>Makerspace Dashboard</h1>
-        <hr>
+        <script src="js/mainsite.js" defer></script>
+        <script src="../js/sitewide.js" defer></script>
 
-        <!--Oppsett-->
-        <h2 style="text-decoration: underline; padding-left: 1%; display: inline;">Oppsett</h2><button style="display: inline; margin-left:2%;" id="oppsettButton">Vis &darr;</button> 
-        <span id="oppsett" style="display:none;">
-            <p style="padding-left: 1%;">Her kan du se statusen til de fleste av 3D printerne på Elvebakken VGSs skaperversted!</p>
-            <p style="padding-left: 1%;">Du kan også bruke octofarm til å se status på printeren: <a href="http://192.168.3.101:3069/" target="_blank">http://192.168.3.101:3069/</a></p>
-            <p style="padding-left: 1%;">For å kunne bruke dem må du koble deg til 3D-printer wifi netverket.<p>
-            <p style="padding-left: 1%;">Så kan du gå inn på en av adressene under for å begynne å bruke Octoprint. Octoprint innlogging: <span style="font-weight: bold;">Brukernavn: 'Makerspace' Passord: 'user'</span></p>
-            <a href="oppsetcura" style="padding-left: 1%;">Hvordan sette opp Cura for enda enklere printing med Octoprint.</a>
-        </span>
+        <!--Top nav-->
+        <hr>
+        <div class = "topnav">
+            <nav>
+                <div class="topnav-content">
+                    <button class="hamburger-menu" onclick="toggleMenu()">&#9776;</button>
+                    <a id = "mobiletitle" class = "navelement selected" href="/">Makerspace Dashboard</a>
+                </div>
+                <ul class = "navbar">
+                    <li><a class = "navelement" href="/oppsett">Oppsett</a></li>
+                    <li><a class = "navelement" href="/cura">Cura</a></li>
+                    <li><a id = "title" class = "navelement selected" href="/">Makerspace Dashboard</a></li>
+                    <li><a class = "navelement" id = "octofarmButton" href="http://192.168.3.101:3069/" target="_blank">Octofarm <i class="fas fa-external-link-alt"></i></a></li>
+                </ul>
+            </nav>
+        </div>
+        <hr>
 
         <!--3D Printere-->
         <h2 style="text-decoration: underline; padding-left: 1%;">3D Printere</h2> 
-        <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Søk etter printer...">
+        <p style="padding-left: 1%;">Her kan du se statusen til de fleste av 3D printerne på Elvebakken VGSs skaperversted!</p>
+        <!--Search field-->
+        <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Søk etter printer (Ctrl + K)">
+        <!--Printer tabel-->
         <table id="printerTable">
             <thead id="printerTableHeader">
-            <tr><th>Navn <span class="sortable" onclick="sortTable(0)">&darr;</span></th>
-                <th>Model <span class="sortable" onclick="sortTable(1)">&darr;</span></th>
-                <th>Adresse <span class="sortable" onclick="sortTable(2)">&darr;</span></th>
-                <th>Status <button id="refreshButton">Refresh</button><span class="sortable" onclick="sortTable(3)">&darr;</span></div></th></tr>
+            <tr><th>Navn <span class="sortable" onclick="sortTable(0, event)">&uarr;</span></th>
+                <th>Model <span class="sortable" onclick="sortTable(1, event)">&uarr;</span></th>
+                <th>Adresse <span class="sortable" onclick="sortTable(2, event)">&uarr;</span></th>
+                <th>Status <button id="refreshButton">Refresh</button><span class="sortable" onclick="sortTable(3, event)">&uarr;</span></div></th></tr>
             </thead>
             <tbody id="printerTableBody">
             </tbody>
         </table>
+        <!--Loading text that will be displayed while printer data is being fetched.-->
         <div id="loading" style="display: block;">(Fetching printer data...)</div>
 
         <!--Footer-->

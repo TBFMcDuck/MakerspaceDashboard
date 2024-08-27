@@ -1,17 +1,34 @@
-var oppsett_span = document.getElementById('oppsett');
-var oppsett_knapp = document.getElementById("oppsettButton");
-
-
-oppsett_knapp.addEventListener('click', function() {
-  if (oppsett_span.style.display === 'none') {
-    oppsett_span.style.display = 'block';
-    oppsett_knapp.textContent = "Skjul \u2191";
-  } else {
-    oppsett_span.style.display = 'none';
-    oppsett_knapp.textContent = "Vis \u2193";
+// Check if user is using a mobile phone
+if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+    var mobileUser = true;
+  }else{
+    var mobileUser = false;
   }
+
+// Hotkey for search input
+function focusSearch() {
+    document.getElementById("searchInput").focus();
+}
+
+// Unfocus the search input
+function unfocusSearch() {
+    document.getElementById("searchInput").blur();
+}
+
+// Add ctrl + k as a hotkey for search input
+document.addEventListener('keydown', function(event) {
+    if (event.ctrlKey && event.key === "k") {
+        event.preventDefault(); // Prevents the browsers default action (eks google search)
+        if (document.activeElement !== document.getElementById("searchInput")) {
+            focusSearch(); // Focus on the search input
+        }
+        else {
+            unfocusSearch();
+        }
+    }
 });
 
+// Search
 function searchFunction() {
   // Declare variables
   var input, filter, table, tr, td, i, txtValue;
@@ -33,10 +50,12 @@ function searchFunction() {
     }
   }
 }
+
 // Variables to save the last sort column and order so the sort can be reapplied after the table is refreshed
 let lastSortColumn = null;
 let lastSortOrder = null;
-function sortTable(n) {
+// Sort the column alphabetically
+function sortTable(n, event) {
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
     table = document.getElementById("printerTable");
     switching = true;
@@ -93,10 +112,13 @@ function sortTable(n) {
     lastSortColumn = n;
     if (dir == "asc") {
         lastSortOrder = "asc";
+        event.target.innerHTML = "&darr;";
     } else {
         lastSortOrder = "desc";
+        event.target.innerHTML = "&uarr;";
     }
 }
+
 // Refresh the table when the page loads
 window.onload = function() {
     refreshTable();
@@ -125,7 +147,12 @@ function refreshTable() {
 
             cell1.innerHTML = item.name + " (Data fetched at:" + item.updateTime + ")";
             cell2.innerHTML = item.type;
-            cell3.innerHTML = '<a href="' + item.address + '" target="_blank">' + item.address + '</a>';
+            if (mobileUser){
+                cell3.innerHTML = '<a href="' + item.address + '" target="_blank">' + item.address.substring(7, 13) + '...</a>';
+            }
+            else {
+                cell3.innerHTML = '<a href="' + item.address + '" target="_blank">' + item.address + '</a>';
+            }
             cell4.innerHTML = item.status;
             cell4.className = 'status-cell';
 
@@ -175,3 +202,4 @@ function refreshTable() {
 
 // Add an event listener to the button
 document.getElementById('refreshButton').addEventListener('click', refreshTable);
+
