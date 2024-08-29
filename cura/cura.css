@@ -20,6 +20,10 @@
     width: 30%;
 }
 
+p, h2 {
+    color: white;
+}
+
 /* Responsive styles for mobile */
 @media screen and (max-width: 768px) {
     .expIMG {

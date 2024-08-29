@@ -123,16 +123,45 @@ body {
 
 /* Search field */
 #searchInput {
-    background-color: #505250;
+    background-color: #696969;
+    border: 2px solid black;
     width: 100%;
-    padding: 15px 20px;
+    padding: 25px 20px;
     margin: 8px 0;
     box-sizing: border-box;
-    transition: padding 0.3s ease;
+    transition: padding 0.3s ease, font-size 0.3s ease;;
+    font-size: large;
+    color: white;
+    outline: none;
+}
+
+#searchInput::placeholder {
+    color: #cccccc;
 }
 
 #searchInput:focus {
-    padding: 20px;
+    padding: 30px;
+    font-size: larger;
+}
+
+.underSearchDiv {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+
+#updatedAutoText {
+    position: absolute;
+    margin-right: 15px;
+    right: 0px;
+    transform: translateY(-50%);
+}
+
+/* Switch button */
+#switchDisplayBTN {
+    background-color: #383838;
+    margin-left: 10px;
+    width: 200px;
 }
 
 /* Loading text */
@@ -144,18 +173,21 @@ body {
 
 /* Table of printer data */
 #printerTable {
+    margin-top: 10px;
     width: 100%;
     border-collapse: collapse;
+    color:white;
 }
 
 #printerTable th, #printerTable td {
-    border: 1px solid #292929;
+    border: 1px solid #000000;
     padding: 8px;
     text-align: left;
 }
 
 #printerTable tr:nth-child(even) {
-    background-color: #c5c4c4;
+    background-color: #292929;
+    color:white;
 }
 
 #printerTable th {
@@ -165,11 +197,6 @@ body {
 
 #printerTable th:nth-child(4) {
     width: 20%;
-}
-
-/* Switch button */
-#switchDisplayBTN {
-    background-color: #383838;
 }
 
 /* Printergrid */
@@ -229,6 +256,17 @@ body {
     width: 90%;
     left:5%;
     height: 10%;
-    border:
     border-radius: 4px;
+}
+
+/* Footerdiv */
+#footerDiv {
+    background-color: #232323;
+    padding: 1px;
+}
+
+.footerText {
+    text-align: center; 
+    font-size: 15px; 
+    color:white;
 }

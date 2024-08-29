@@ -30,17 +30,25 @@
         </div>
 
         <!--3D Printere-->
-        <div style = "display: flex; flex-direction: row;"><h2 style="text-decoration: underline; padding-left: 1%;">3D Printere</h2><button id = "switchDisplayBTN" onclick="switchDisplay()">Switch to gridview</button></div>
-        <p style="padding-left: 1%;">Her kan du se statusen til de fleste av 3D printerne på Elvebakken VGSs skaperversted!</p>
         <!--Search field-->
-        <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Søk etter printer (Ctrl + K)">
+        <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Søk etter printer, model eller status (Ctrl + K)">
+        <div class="underSearchDiv">
+            <button id = "switchDisplayBTN" onclick="switchDisplay()">
+                Switch to tableview
+                <i class="fas fa-table"></i> <!-- Table icon -->
+            </button>
+            <p id="updatedAutoText">
+                The values are updated automatically.
+                <i class="fas fa-sync"></i>
+            </p>
+        </div>
         <!--Printer tabel-->
         <table id="printerTable">
             <thead id="printerTableHeader">
             <tr><th>Navn <span class="sortable" onclick="sortTable(0, event)">&uarr;</span></th>
                 <th>Model <span class="sortable" onclick="sortTable(1, event)">&uarr;</span></th>
                 <th>Adresse <span class="sortable" onclick="sortTable(2, event)">&uarr;</span></th>
-                <th>Status <button id="refreshButton">Refresh</button><span class="sortable" onclick="sortTable(3, event)">&uarr;</span></div></th></tr>
+                <th>Status <span class="sortable" onclick="sortTable(3, event)">&uarr;</span></div></th></tr>
             </thead>
             <tbody id="printerTableBody">
             </tbody>
@@ -50,15 +58,17 @@
         <!--Loading text that will be displayed while printer data is being fetched.-->
         <div id="loading" style="display: block;">(Fetching printer data...)</div>
 
-        <!--Footer-->
-        <footer>
-            <p style="text-align: center; font-size: 9px;">Laget av <a href="https://tbf3d.com", target = "_blank">Trym</a></p>
-        </footer>
-
         <!-- Firebase stuff -->
         <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
         <script src="js/firebaseInnit.js"></script>
+        
+        <!--Footer-->
+        <footer>
+            <div id="footerDiv">
+                <p class="footerText">Laget av <a class="footerText" href="https://tbf3d.com", target = "_blank">Trym</a></p>
+            </div>
+        </footer>
 
     </body>
 </html>

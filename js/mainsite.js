@@ -15,7 +15,7 @@ function unfocusSearch() {
     document.getElementById("searchInput").blur();
 }
 
-// Add ctrl + k as a hotkey for search input
+// Add ctrl + k as a hotkey for search input and enter to scroll down to results
 document.addEventListener('keydown', function(event) {
     if (event.ctrlKey && event.key === "k") {
         event.preventDefault(); // Prevents the browsers default action (eks google search)
@@ -25,6 +25,25 @@ document.addEventListener('keydown', function(event) {
         else {
             unfocusSearch();
         }
+    }
+    else if (event.key === "Enter") {
+        let element;
+        if (currentDisplayMode === "table") {
+            element = document.getElementById("printerTable");
+        } else {
+            element = document.getElementById("printerGrid");
+        }
+        
+        // Calculate the offset position
+        const navbarHeight = document.querySelector('.topnav').offsetHeight;
+        const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+        const offsetPosition = elementPosition - navbarHeight;
+
+        // Scroll to the calculated position
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
     }
 });
 
@@ -142,11 +161,11 @@ var currentDisplayMode = "grid"
 function switchDisplay () {
     if (currentDisplayMode === "table") {
         currentDisplayMode = "grid";
-        switchBTN.innerHTML = 'Switch to tableview'
+        switchBTN.innerHTML = 'Switch to tableview <i class="fas fa-table"></i>'
     }
     else {
         currentDisplayMode = "table";
-        switchBTN.innerHTML = 'Switch to gridview'
+        switchBTN.innerHTML = 'Switch to gridview <i class="fas fa-th">'
     }
 
     refreshTable();
@@ -183,7 +202,7 @@ function refreshTable() {
     // Initialize Firestore
     var db = firebase.firestore();
 
-    // Fetch the printerdata from Firestore
+    // Fetch the printerdata from Firestore (real time listner)
     db.collection("printerdata").onSnapshot((querySnapshot) => {;
         if (currentDisplayMode === "table") {
             // Remove printergrid
@@ -276,7 +295,4 @@ function refreshTable() {
         document.getElementById('loading').style.display = 'none';
     });
 }
-
-// Add an event listener to the button
-document.getElementById('refreshButton').addEventListener('click', refreshTable);
 
