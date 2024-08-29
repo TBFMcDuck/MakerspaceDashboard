@@ -6,7 +6,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f0f0f0;
+    background-color: #383838;
 }
 
 /* Title */
@@ -123,6 +123,7 @@ body {
 
 /* Search field */
 #searchInput {
+    background-color: #505250;
     width: 100%;
     padding: 15px 20px;
     margin: 8px 0;
@@ -166,6 +167,55 @@ body {
     width: 20%;
 }
 
+/* Switch button */
+#switchDisplayBTN {
+    background-color: #383838;
+}
+
+/* Printergrid */
+#printerGrid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+/* Cards */
+.printer-card {
+    background: #292929;
+    text-align: center;
+    border-radius: 10px;
+    margin:10px;
+    width:200px;
+    height: 250px;
+    flex-grow: 1;
+    position: relative;
+}
+
+.printer-card h3 {
+    color: white;
+}
+
+.printer-card h4 {
+    color: #909090;
+}
+
+.printer-status-card {
+    font-size: medium;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.printer-bottom-text {
+    color: #383838;
+    position: absolute;
+    bottom: 10px;
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust position to center */
+}
+
 /* Status column */
 .tooltip {
     cursor: pointer;
@@ -175,8 +225,10 @@ body {
 }
 .status-progress {
     position: absolute;
-    bottom: 0;
-    width: 100%;
-    border-radius: 0;
+    top: 54%;
+    width: 90%;
+    left:5%;
     height: 10%;
+    border:
+    border-radius: 4px;
 }

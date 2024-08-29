@@ -13,7 +13,7 @@
         <script src="js/sitewide.js" defer></script>
 
         <!--Top nav-->
-        <hr>
+        <p></p>
         <div class = "topnav">
             <nav>
                 <div class="topnav-content">
@@ -28,10 +28,9 @@
                 </ul>
             </nav>
         </div>
-        <hr>
 
         <!--3D Printere-->
-        <h2 style="text-decoration: underline; padding-left: 1%;">3D Printere</h2> 
+        <div style = "display: flex; flex-direction: row;"><h2 style="text-decoration: underline; padding-left: 1%;">3D Printere</h2><button id = "switchDisplayBTN" onclick="switchDisplay()">Switch to gridview</button></div>
         <p style="padding-left: 1%;">Her kan du se statusen til de fleste av 3D printerne på Elvebakken VGSs skaperversted!</p>
         <!--Search field-->
         <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Søk etter printer (Ctrl + K)">
@@ -46,12 +45,13 @@
             <tbody id="printerTableBody">
             </tbody>
         </table>
+        <!--Printer div-->
+        <div id = "printerGrid"></div>
         <!--Loading text that will be displayed while printer data is being fetched.-->
         <div id="loading" style="display: block;">(Fetching printer data...)</div>
 
         <!--Footer-->
         <footer>
-            <hr>
             <p style="text-align: center; font-size: 9px;">Laget av <a href="https://tbf3d.com", target = "_blank">Trym</a></p>
         </footer>
 

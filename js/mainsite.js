@@ -34,21 +34,37 @@ function searchFunction() {
   var input, filter, table, tr, td, i, txtValue;
   input = document.getElementById("searchInput");
   filter = input.value.toUpperCase();
-  table = document.getElementById("printerTable");
-  tr = table.getElementsByTagName("tr");
 
-  // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
+  if (currentDisplayMode === "table"){
+    table = document.getElementById("printerTable");
+    tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+        } else {
+            tr[i].style.display = "none";
+        }
+        }
     }
-  }
+    }
+    else {
+        grid = document.getElementById("printerGrid");
+        var gridItems = grid.children; // Get the child elements of the grid
+        for (i = 0; i < gridItems.length; i++) {
+            child = gridItems[i];
+            txtValue = child.textContent || child.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                child.style.display = "";
+            } else {
+                child.style.display = "none";
+            }
+        }
+    }
 }
 
 // Variables to save the last sort column and order so the sort can be reapplied after the table is refreshed
@@ -119,80 +135,141 @@ function sortTable(n, event) {
     }
 }
 
+// Switch display modes
+var switchBTN = document.getElementById("switchDisplayBTN");
+var currentDisplayMode = "grid"
+
+function switchDisplay () {
+    if (currentDisplayMode === "table") {
+        currentDisplayMode = "grid";
+        switchBTN.innerHTML = 'Switch to tableview'
+    }
+    else {
+        currentDisplayMode = "table";
+        switchBTN.innerHTML = 'Switch to gridview'
+    }
+
+    refreshTable();
+}
+
+// Clean status
+function cleanStatus(status, progress){
+    // Cleaning the status
+    if (status == "Printing") {
+        return ['<div>' + status + ' (' + Math.round(progress) + '%)</div>' + '<div><progress class="status-progress" value="' + progress + '" max="100"></progress></div>', '#ff8c00'];
+    }
+    else if (status == "Operational") {
+        return ["Operational", '#00ff77'];
+    }
+    else if (status == "Paused") {
+        return ['<div>' + status + ' (' + progress + '%)</div>' + '<div><progress class="status-progress" value="' + progress + '" max="100"></progress></div>', '#2b8eff'];
+    }
+    else if(status == "Offline after error") {
+        return ["(Probably) Turned off" + "<span class = 'tooltip' title='Offline after error'>🛈</span>", '#696969'];
+    }
+    else if (status == "Offline") {
+        return ["Offline", '#872727'];
+    }
+    else if (status == null) {
+        return ["Unknown", "#232323"];
+    }
+}
+
 // Refresh the table when the page loads
 window.onload = function() {
     refreshTable();
 }
 function refreshTable() {
-    // Clear the table
-    document.getElementById('printerTableBody').innerHTML = '';
-    // Display loading text
-    document.getElementById('loading').style.display = 'block';
-
     // Initialize Firestore
     var db = firebase.firestore();
 
     // Fetch the printerdata from Firestore
-    db.collection("printerdata").onSnapshot((querySnapshot) => {
-        var table = document.getElementById('printerTableBody');
-        table.innerHTML = ''; // Clear the table before adding new data
+    db.collection("printerdata").onSnapshot((querySnapshot) => {;
+        if (currentDisplayMode === "table") {
+            // Remove printergrid
+            document.getElementById("printerGrid").style.display = 'none';
+            // Show top row of table
+            document.getElementById("printerTable").style.display = 'table';
 
-        querySnapshot.forEach((doc) => {
-            var item = doc.data();
-            var row = table.insertRow(-1);
-            var cell1 = row.insertCell(0);
-            var cell2 = row.insertCell(1);
-            var cell3 = row.insertCell(2);
-            var cell4 = row.insertCell(3);
+            var table = document.getElementById('printerTableBody')
+            table.innerHTML = ''; // Clear the table before adding new data
+            // Display loading text
+            document.getElementById('loading').style.display = 'block';
 
-            cell1.innerHTML = item.name + " (Data fetched at:" + item.updateTime + ")";
-            cell2.innerHTML = item.type;
-            if (mobileUser){
-                cell3.innerHTML = '<a href="' + item.address + '" target="_blank">' + item.address.substring(7, 13) + '...</a>';
-            }
-            else {
-                cell3.innerHTML = '<a href="' + item.address + '" target="_blank">' + item.address + '</a>';
-            }
-            cell4.innerHTML = item.status;
-            cell4.className = 'status-cell';
+            querySnapshot.forEach((doc) => {
+                var item = doc.data();
+                var row = table.insertRow(-1);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                var cell4 = row.insertCell(3);
 
-            // Cleaning the status
-            if (item.status == "Printing") {
-                cell4.innerHTML = '<div>' + item.status + ' (' + Math.round(item.progress) + '%)</div>' + '<div><progress class="status-progress" value="' + item.progress + '" max="100"></progress></div>';
-                cell4.style.backgroundColor = '#ff8c00';
-            }
-            else if (item.status == "Operational") {
-                cell4.style.backgroundColor = '#00ff77';
-            }
-            else if (item.status == "Paused") {
-                cell4.innerHTML = '<div>' + item.status + ' (' + item.progress + '%)</div>' + '<div><progress class="status-progress" value="' + item.progress + '" max="100"></progress></div>';
-                cell4.style.backgroundColor = '#2b8eff';
-            }
-            else if(item.status == "Offline after error") {
-                cell4.innerHTML = "(Probably) Turned off" + "<span class = 'tooltip' title='Offline after error'>🛈</span>";
-                cell4.style.backgroundColor = '#696969';
-            }
-            else if (item.status == "Offline") {
-                cell4.style.backgroundColor = '#872727';
-            }
-            else if (item.status == null) {
-                cell4.innerHTML = "unknown";
-            }
+                cell1.innerHTML = item.name + " (Data fetched at:" + item.updateTime + ")";
+                cell2.innerHTML = item.type;
+                if (mobileUser){
+                    cell3.innerHTML = '<a href="' + item.address + '" target="_blank">' + item.address.substring(7, 13) + '...</a>';
+                }
+                else {
+                    cell3.innerHTML = '<a href="' + item.address + '" target="_blank">' + item.address + '</a>';
+                }
+                
+                // Cleaned status
+                var cleaned_status_and_bg_color = cleanStatus(item.status, item.progress);
+                cell4.innerHTML = cleaned_status_and_bg_color[0];
+                cell4.style.backgroundColor = cleaned_status_and_bg_color[1];
+                cell4.className = 'status-cell';
 
+                // Hide loading text
+                document.getElementById('loading').style.display = 'none';
+                // Reapply the sort
+                if (lastSortColumn !== null) {
+                    sortTable(lastSortColumn);
+                    // If your sort function doesn't automatically toggle the sort order,
+                    // you might need to apply the sort twice to get the correct order
+                    if (lastSortOrder === "desc") {
+                        console.log('Sorting again');
+                        sortTable(lastSortColumn);
+                    }
+                }
+            });
+        }
+        else {
             // Hide loading text
             document.getElementById('loading').style.display = 'none';
-            // Reapply the sort
-            if (lastSortColumn !== null) {
-                sortTable(lastSortColumn);
-                // If your sort function doesn't automatically toggle the sort order,
-                // you might need to apply the sort twice to get the correct order
-                if (lastSortOrder === "desc") {
-                    console.log('Sorting again');
-                    sortTable(lastSortColumn);
-                }
-            }
-            searchFunction();
-        });
+            // Hide pritnertable
+            document.getElementById("printerTable").style.display = 'none';
+
+            // Show grid
+            var printergrid = document.getElementById("printerGrid");
+            printergrid.style.display = 'flex';
+            printergrid.innerHTML = '';
+
+            querySnapshot.forEach((doc) => {
+                var item = doc.data();
+                var newCard = document.createElement("div");
+
+                var octoprintLink = '<a href="' + item.address +  '" target="_blank"<i class="fas fa-external-link-alt" style = "color:white;"></i></a>'
+                
+                var clean_status = cleanStatus(item.status, item.progress);
+                var status = document.createElement("div");
+                status.innerHTML = clean_status[0];
+                status.style.backgroundColor = clean_status[1];
+                status.className = 'printer-status-card';
+                var lastUpdated = document.createElement("p")
+                lastUpdated.innerHTML = '<p class=printer-bottom-text> Fetched: ' + item.updateTime + '</p>';
+
+                newCard.className = "printer-card";
+                newCard.innerHTML = '<h3>' + item.name + " " + octoprintLink + '</h3>' + '<h4> Model: ' + item.type + '</h4>'
+                newCard.appendChild(status);
+                newCard.appendChild(lastUpdated);
+
+                printergrid.appendChild(newCard);
+            });
+        }
+
+        // Reapply search
+        searchFunction();
+
     }, error => {
         console.error('Error:', error);
         // Hide loading text
