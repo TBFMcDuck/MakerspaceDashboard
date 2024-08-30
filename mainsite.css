@@ -154,14 +154,14 @@ body {
     position: absolute;
     margin-right: 15px;
     right: 0px;
-    transform: translateY(-50%);
+    transform: translateY(-70%);
 }
 
 /* Switch button */
 #switchDisplayBTN {
     background-color: #383838;
     margin-left: 10px;
-    width: 200px;
+    width: 190px;
 }
 
 /* Loading text */
@@ -232,7 +232,8 @@ body {
     margin-left: 10px;
     margin-right: 10px;
     border-radius: 5px;
-    padding: 5px;
+    padding: 0px;
+    height: 28px;
 }
 
 .printer-bottom-text {
@@ -250,13 +251,16 @@ body {
 .status-cell {
     position: relative;
 }
-.status-progress {
+
+.timeleftText {
     position: absolute;
-    top: 54%;
-    width: 90%;
-    left:5%;
-    height: 10%;
-    border-radius: 4px;
+    z-index: 1;
+    text-align: center;
+}
+
+.statusText {
+    position: relative;
+    z-index: 1;
 }
 
 /* Footerdiv */

@@ -175,22 +175,40 @@ function switchDisplay () {
 function cleanStatus(status, progress){
     // Cleaning the status
     if (status == "Printing") {
-        return ['<div>' + status + ' (' + Math.round(progress) + '%)</div>' + '<div><progress class="status-progress" value="' + progress + '" max="100"></progress></div>', '#ff8c00'];
+        let statusTextDiv = document.createElement("div");
+        statusTextDiv.className = "statusText";
+        statusTextDiv.innerHTML = status + ' (' + Math.round(progress) + '%)';
+        return [statusTextDiv, '#383838'];
     }
     else if (status == "Operational") {
-        return ["Operational", '#00ff77'];
+        let statusTextDiv = document.createElement("div");
+        statusTextDiv.className = "statusText";
+        statusTextDiv.innerHTML = "Operational";
+        return [statusTextDiv, '#00ff77'];
     }
     else if (status == "Paused") {
-        return ['<div>' + status + ' (' + progress + '%)</div>' + '<div><progress class="status-progress" value="' + progress + '" max="100"></progress></div>', '#2b8eff'];
+        let statusTextDiv = document.createElement("div");
+        statusTextDiv.className = "statusText";
+        statusTextDiv.innerHTML = status + ' (' + Math.round(progress) + '%)';
+        return [, '#2b8eff'];
     }
     else if(status == "Offline after error") {
-        return ["(Probably) Turned off" + "<span class = 'tooltip' title='Offline after error'>🛈</span>", '#696969'];
+        let statusTextDiv = document.createElement("div");
+        statusTextDiv.className = "statusText";
+        statusTextDiv.innerHTML = "(Probably) Turned off" + "<span class = 'tooltip' title='Offline after error'>🛈</span>";
+        return [statusTextDiv, '#696969'];
     }
     else if (status == "Offline") {
-        return ["Offline", '#872727'];
+        let statusTextDiv = document.createElement("div");
+        statusTextDiv.className = "statusText";
+        statusTextDiv.innerHTML = "Offline";
+        return [statusTextDiv, '#872727'];
     }
     else if (status == null) {
-        return ["Unknown", "#232323"];
+        let statusTextDiv = document.createElement("div");
+        statusTextDiv.className = "statusText";
+        statusTextDiv.innerHTML = "Unknown";
+        return [statusTextDiv, "#232323"];
     }
 }
 
@@ -270,16 +288,31 @@ function refreshTable() {
                 var octoprintLink = '<a href="' + item.address +  '" target="_blank"<i class="fas fa-external-link-alt" style = "color:white;"></i></a>'
                 
                 var clean_status = cleanStatus(item.status, item.progress);
+                // Status
                 var status = document.createElement("div");
-                status.innerHTML = clean_status[0];
                 status.style.backgroundColor = clean_status[1];
                 status.className = 'printer-status-card';
-                var lastUpdated = document.createElement("p")
+                if (item.status === "Printing" || item.status === "Pause") {
+                    let progressBar = new Progress({parent: status, cornerRadius: "3px", barColor: "#ff8c00", backgroundColor: "#383838", minPercent: 0.01});
+                    progressBar.setProgress(item.progress/100);
+                    progressBar.addMidElement(clean_status[0]);
+                }
+                else {
+                    status.appendChild(clean_status[0]);
+                }
+
+                var lastUpdated = document.createElement("p");
                 lastUpdated.innerHTML = '<p class=printer-bottom-text> Fetched: ' + item.updateTime + '</p>';
 
                 newCard.className = "printer-card";
                 newCard.innerHTML = '<h3>' + item.name + " " + octoprintLink + '</h3>' + '<h4> Model: ' + item.type + '</h4>'
                 newCard.appendChild(status);
+                if (item.status === "Printing" || item.status === "Pause") {
+                    var timeLeft = document.createElement("div");
+                    console.log(item.printTime, item.timeLeft);
+                    timeLeft.innerHTML = '<p class="timeleftText">' + Math.round(item.printTime/60)+ "min/" + Math.round(item.timeLeft/60) + 'min</p>';
+                    newCard.appendChild(timeLeft);
+                }
                 newCard.appendChild(lastUpdated);
 
                 printergrid.appendChild(newCard);
