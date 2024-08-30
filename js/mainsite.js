@@ -157,15 +157,18 @@ function sortTable(n, event) {
 // Switch display modes
 var switchBTN = document.getElementById("switchDisplayBTN");
 var currentDisplayMode = "grid"
+let searchInput = document.getElementById("searchInput");
 
 function switchDisplay () {
     if (currentDisplayMode === "table") {
         currentDisplayMode = "grid";
         switchBTN.innerHTML = 'Switch to tableview <i class="fas fa-table"></i>'
+        searchInput.placeholder = "Søk etter printer, model, status eller adresse (Ctrl + K)"
     }
     else {
         currentDisplayMode = "table";
         switchBTN.innerHTML = 'Switch to gridview <i class="fas fa-th">'
+        searchInput.placeholder = "Søk etter printer (Ctrl + K)"
     }
 
     refreshTable();
@@ -178,7 +181,7 @@ function cleanStatus(status, progress){
         let statusTextDiv = document.createElement("div");
         statusTextDiv.className = "statusText";
         statusTextDiv.innerHTML = status + ' (' + Math.round(progress) + '%)';
-        return [statusTextDiv, '#383838'];
+        return [statusTextDiv, "#ff8c00"];
     }
     else if (status == "Operational") {
         let statusTextDiv = document.createElement("div");
@@ -252,7 +255,7 @@ function refreshTable() {
                 
                 // Cleaned status
                 var cleaned_status_and_bg_color = cleanStatus(item.status, item.progress);
-                cell4.innerHTML = cleaned_status_and_bg_color[0];
+                cell4.appendChild(cleaned_status_and_bg_color[0]);
                 cell4.style.backgroundColor = cleaned_status_and_bg_color[1];
                 cell4.className = 'status-cell';
 
@@ -286,7 +289,8 @@ function refreshTable() {
                 var newCard = document.createElement("div");
 
                 var octoprintLink = '<a href="' + item.address +  '" target="_blank"<i class="fas fa-external-link-alt" style = "color:white;"></i></a>'
-                
+                let itemName = '<a style = "color: white; text-decoration: none;" href="' + item.address +  '" target="_blank">' + item.name + '</a>'
+
                 var clean_status = cleanStatus(item.status, item.progress);
                 // Status
                 var status = document.createElement("div");
@@ -305,15 +309,46 @@ function refreshTable() {
                 lastUpdated.innerHTML = '<p class=printer-bottom-text> Fetched: ' + item.updateTime + '</p>';
 
                 newCard.className = "printer-card";
-                newCard.innerHTML = '<h3>' + item.name + " " + octoprintLink + '</h3>' + '<h4> Model: ' + item.type + '</h4>'
+                newCard.innerHTML = '<h3>' + itemName + " " + octoprintLink + '</h3>' + '<h4> Model: ' + item.type + '</h4>'
                 newCard.appendChild(status);
+
+                // Timeleft
                 if (item.status === "Printing" || item.status === "Pause") {
-                    var timeLeft = document.createElement("div");
-                    console.log(item.printTime, item.timeLeft);
-                    timeLeft.innerHTML = '<p class="timeleftText">' + Math.round(item.printTime/60)+ "min/" + Math.round(item.timeLeft/60) + 'min</p>';
-                    newCard.appendChild(timeLeft);
+                    let timeLeftDiv = document.createElement("div");
+                    timeLeftDiv.className = "timeleftDiv";
+                    
+                    let printTime = item.printTime;
+                    let printTimeUnit = "s";
+                    if (printTime >= 60) {
+                        printTime = printTime/60;
+                        printTimeUnit = "min";
+                        if (printTime >= 60) {
+                            printTime = printTime/60;
+                            printTimeUnit = "h";
+                        }
+                    }
+                    let timeLeft = item.timeLeft + item.printTime;
+                    let timeLeftUnit = "s";
+                    if (timeLeft >= 60) {
+                        timeLeft = timeLeft/60;
+                        timeLeftUnit = "min";
+                        if (timeLeft >= 60) {
+                            timeLeft = timeLeft/60;
+                            timeLeftUnit = "h";
+                        }
+                    }
+
+                    timeLeftDiv.innerHTML = '<p class="timeleftText">' + printTime.toFixed(1)+ timeLeftUnit + "/" + timeLeft.toFixed(1) + printTimeUnit + '</p>';
+                    newCard.appendChild(timeLeftDiv);
                 }
+
                 newCard.appendChild(lastUpdated);
+
+                // Adress
+                var address = document.createElement("p");
+                address.innerHTML = '<p class="adressBottomText">' + item.address + '<p>';
+                
+                newCard.appendChild(address);
 
                 printergrid.appendChild(newCard);
             });
