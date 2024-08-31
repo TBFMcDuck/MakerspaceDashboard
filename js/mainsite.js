@@ -381,7 +381,7 @@ channel.onmessage = (event) => {
             unsubscribe();
             unsubscribe = null;
             updatingText.innerHTML = 'Updates paused because other tab is active. <i class="fas fa-pause-circle"></i>';
-            document.title = '(PAUSED) Makerspace Dashboard';
+            document.title = '(inactive) Makerspace Dashboard';
         }
     }
 };
@@ -402,12 +402,14 @@ window.addEventListener('blur', () => {
         unsubscribe();
         unsubscribe = null;
         updatingText.innerHTML = 'Updates paused because other tab is active. <i class="fas fa-pause-circle"></i>';
-        document.title = '(PAUSED) Makerspace Dashboard';
+        document.title = '(inactive) Makerspace Dashboard';
     }
 });
 
 // Initialize Firestore
 var db = firebase.firestore();
+
+var querySnapshotLocal = null;
 
 // Refresh the table when the page loads
 window.onload = function() {
@@ -425,24 +427,27 @@ function subscribeToFirestore() {
 
     let query = db.collection("printerdata");
     if (lastUpdateTime) {
-        query = query.where("updateTime", ">", lastUpdateTime);
+       query = query.where("updateTime", ">", lastUpdateTime);
     }
 
     // Fetch the printerdata from Firestore (real time listener)
     unsubscribe = query.onSnapshot((querySnapshot) => {
         // Check if this tab should update
         if (!shouldUpdate) return;
+        
+        updateLocalQuery(querySnapshot);
+
 
         if (currentDisplayMode === "table") {
-            renderTable(querySnapshot);
+            renderTable(querySnapshotLocal);
         } else {
-            renderGrid(querySnapshot);
+            renderGrid(querySnapshotLocal);
         }
 
         // Reapply search
         searchFunction();
 
-        // Update the lastUpdateTime to the latest document's updateTime
+        // Update the lastUpdateTime to the smallest earliest of the new document's updateTime
         if (!querySnapshot.empty) {
             let maxUpdateTime = querySnapshot.docs[0].data().updateTime;
             querySnapshot.forEach(doc => {
@@ -451,7 +456,7 @@ function subscribeToFirestore() {
                     maxUpdateTime = updateTime;
                 }
             });
-            lastUpdateTime = maxUpdateTime;
+           lastUpdateTime = maxUpdateTime;
         }
 
     }, error => {
@@ -468,3 +473,27 @@ function subscribeToFirestore() {
     });
 }
 
+function updateLocalQuery(updatedQuery) {
+    if (querySnapshotLocal === null) {
+        querySnapshotLocal = updatedQuery;
+    } else {
+        // Create a map of local documents for quick lookup
+        const localDocsMap = new Map();
+        querySnapshotLocal.forEach(doc => {
+            localDocsMap.set(doc.id, doc);
+        });
+
+        // Update local documents with new data
+        updatedQuery.forEach(updatedDoc => {
+            if (localDocsMap.has(updatedDoc.id)) {
+                localDocsMap.set(updatedDoc.id, updatedDoc);
+            } else {
+                // Add new documents to the local snapshot
+                querySnapshotLocal.push(updatedDoc);
+            }
+        });
+
+        // Convert the map back to an array
+        querySnapshotLocal = Array.from(localDocsMap.values());
+    }
+}
