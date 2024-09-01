@@ -362,6 +362,7 @@ let unsubscribe = null;
 
 // Updating text
 let updatingText = document.getElementById("updatedAutoText");
+let updatingTextBtmBar = document.getElementById("updatedAutoTextBottomBar");
 
 // Enable Firestore offline persistence, to decrease reads probatly
 firebase.firestore().enablePersistence()
@@ -381,6 +382,7 @@ channel.onmessage = (event) => {
             unsubscribe();
             unsubscribe = null;
             updatingText.innerHTML = 'Updates paused because other tab is active. <i class="fas fa-pause-circle"></i>';
+            updatingTextBtmBar.innerHTML = 'Updates paused because other tab is active. <i class="fas fa-pause-circle"></i>';
             document.title = '(inactive) Makerspace Dashboard';
         }
     }
@@ -392,6 +394,7 @@ window.addEventListener('focus', () => {
     channel.postMessage('active');
     subscribeToFirestore();
     updatingText.innerHTML = 'Updates automatically <i class="fas fa-check"></i>';
+    updatingTextBtmBar.innerHTML = 'Updates automatically <i class="fas fa-check"></i>';
     document.title = 'Makerspace Dashboard';
 });
 
@@ -402,6 +405,7 @@ window.addEventListener('blur', () => {
         unsubscribe();
         unsubscribe = null;
         updatingText.innerHTML = 'Updates paused because other tab is active. <i class="fas fa-pause-circle"></i>';
+        updatingTextBtmBar.innerHTML = 'Updates paused because other tab is active. <i class="fas fa-pause-circle"></i>';
         document.title = '(inactive) Makerspace Dashboard';
     }
 });

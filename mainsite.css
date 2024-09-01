@@ -68,36 +68,6 @@ body {
     cursor: pointer;
 }
 
-/* Responsive styles for mobile */
-@media screen and (max-width: 768px) {
-    /* Remove ordinary title */
-    #title {
-        display: none;
-    }
-
-    #mobiletitle {
-        display: inline;
-    }
-
-    .topnav {
-        justify-content: space-between; /* Place items on the left */
-        padding: 10px;
-    }
-
-    .navbar {
-        display: none;
-        flex-direction: column;
-    }
-
-    .navbar.active {
-        display: flex;
-    }
-
-    .hamburger-menu {
-        display: block;
-    }
-}
-
 /* Sorting printerdata buttons */
 .sortable:hover {
     cursor: pointer;
@@ -162,6 +132,7 @@ body {
 #switchDisplayBTN {
     background-color: #383838;
     margin-left: 10px;
+    margin-right: 10px;
     width: 190px;
 }
 
@@ -297,4 +268,80 @@ body {
     text-align: center; 
     font-size: 15px; 
     color:white;
+}
+
+#bottomBanner {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #333;
+    text-align: center;
+    padding: 10px 0;
+    z-index: 1000; /* Ensure it is above other elements */
+}
+
+#updatedAutoTextBottomBar {
+    display: block; /* Ensure it is displayed */
+    text-align: center;
+    margin: 0;
+    color: white; /* Ensure text is visible */
+}
+
+/* Responsive styles for mobile */
+@media screen and (max-width: 768px) {
+    /* Remove ordinary title */
+    #title {
+        display: none;
+    }
+
+    #mobiletitle {
+        display: inline;
+    }
+
+    .topnav {
+        justify-content: space-between; /* Place items on the left */
+        padding: 10px;
+    }
+
+    .navbar {
+        display: none;
+        flex-direction: column;
+    }
+
+    .navbar.active {
+        display: flex;
+    }
+
+    .hamburger-menu {
+        display: block;
+    }
+
+    .underSearchDiv {
+        display: flex;
+        flex-direction: column; /* Arrange children in a column */
+        align-items: center; /* Center children horizontally */
+    }
+    
+    #switchDisplayBTN {
+        width: 95%;
+        font-size: large;
+        height: 40px;
+    }
+    
+    #updatedAutoText {
+        display: none;
+    }
+
+    #bottomBanner {
+        display: block;
+    }
+
+    #updatedAutoTextBottomBar {
+        display: block; /* Ensure it is displayed */
+        text-align: center;
+        margin: 0;
+        color: white; /* Ensure text is visible */
+        position: static; /* Ensure relative positioning if needed */
+    }
 }
