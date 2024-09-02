@@ -228,6 +228,13 @@ body {
     transform: translateX(-50%); /* Adjust position to center */
 }
 
+.printerNote {
+    color:#909090;
+    position: absolute;
+    bottom:15px;
+    right: 15px;
+}
+
 /* Status column */
 .tooltip {
     cursor: pointer;

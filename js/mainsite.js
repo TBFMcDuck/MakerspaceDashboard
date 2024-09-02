@@ -198,7 +198,7 @@ function cleanStatus(status, progress){
     else if(status == "Offline after error") {
         let statusTextDiv = document.createElement("div");
         statusTextDiv.className = "statusText";
-        statusTextDiv.innerHTML = "(Probably) Turned off" + "<span class = 'tooltip' title='Offline after error'>🛈</span>";
+        statusTextDiv.innerHTML = "(Probably) Turned off " + "<span class = 'tooltip' title='Offline after error'><i class = 'fas fa-info-circle'</i></span>";
         return [statusTextDiv, '#696969'];
     }
     else if (status == "Offline") {
@@ -343,6 +343,11 @@ function renderGrid(querySnapshot) {
         address.innerHTML = '<p class="adressBottomText">' + item.address + '<p>';
         
         newCard.appendChild(address);
+
+        // Printernotes
+        var noteDiv = document.createElement("div");
+        noteDiv.innerHTML = "<span class = 'printerNote tooltip' title='" + item.note + "'><i class='fas fa-file-alt'></i></span>";
+        newCard.append(noteDiv);
 
         printergrid.appendChild(newCard);
     });
