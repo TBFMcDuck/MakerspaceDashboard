@@ -193,7 +193,7 @@ function cleanStatus(status, progress){
         let statusTextDiv = document.createElement("div");
         statusTextDiv.className = "statusText";
         statusTextDiv.innerHTML = status + ' (' + Math.round(progress) + '%)';
-        return [, '#2b8eff'];
+        return [statusTextDiv, '#2b8eff'];
     }
     else if(status == "Offline after error") {
         let statusTextDiv = document.createElement("div");
@@ -207,7 +207,7 @@ function cleanStatus(status, progress){
         statusTextDiv.innerHTML = "Offline";
         return [statusTextDiv, '#872727'];
     }
-    else if (status == null) {
+    else {
         let statusTextDiv = document.createElement("div");
         statusTextDiv.className = "statusText";
         statusTextDiv.innerHTML = "Unknown";
@@ -239,10 +239,10 @@ function renderTable(querySnapshot) {
         cell1.innerHTML = item.name + " (Fetched:" + item.updateTime + ")";
         cell2.innerHTML = item.type;
         if (mobileUser){
-            cell3.innerHTML = '<a href="' + item.address + '" target="_blank">' + item.address.substring(7, 13) + '...</a>';
+            cell3.innerHTML = '<a href="' + item.address + '" target="_blank" style="color:white;">' + item.address.substring(7, 13) + '...</a>';
         }
         else {
-            cell3.innerHTML = '<a href="' + item.address + '" target="_blank">' + item.address + '</a>';
+            cell3.innerHTML = '<a href="' + item.address + '" target="_blank" style="color:white;">' + item.address + '</a>';
         }
         
         // Cleaned status
@@ -290,8 +290,14 @@ function renderGrid(querySnapshot) {
         var status = document.createElement("div");
         status.style.backgroundColor = clean_status[1];
         status.className = 'printer-status-card';
-        if (item.status === "Printing" || item.status === "Pause") {
-            let progressBar = new Progress({parent: status, cornerRadius: "3px", barColor: "#ff8c00", backgroundColor: "#383838", minPercent: 0.01});
+        if (item.status === "Printing" || item.status === "Paused") {
+            if (item.status === "Paused"){
+                var barColor = '#2b8eff';
+            }
+            else {
+                var barColor = "#ff8c00";
+            }
+            let progressBar = new Progress({parent: status, cornerRadius: "3px", barColor: barColor, backgroundColor: "#383838", minPercent: 0.01});
             progressBar.setProgress(item.progress/100);
             progressBar.addMidElement(clean_status[0]);
         }
@@ -307,7 +313,7 @@ function renderGrid(querySnapshot) {
         newCard.appendChild(status);
 
         // Timeleft
-        if (item.status === "Printing" || item.status === "Pause") {
+        if (item.status === "Printing" || item.status === "Paused") {
             let timeLeftDiv = document.createElement("div");
             timeLeftDiv.className = "timeleftDiv";
             
