@@ -231,7 +231,14 @@ body {
 .printerNote {
     color:#909090;
     position: absolute;
-    bottom:15px;
+    top:15px;
+    right: 15px;
+}
+
+.printerNoteImportant {
+    color:#FF4500;
+    position: absolute;
+    top:15px;
     right: 15px;
 }
 

@@ -352,7 +352,11 @@ function renderGrid(querySnapshot) {
 
         // Printernotes
         var noteDiv = document.createElement("div");
-        noteDiv.innerHTML = "<span class = 'printerNote tooltip' title='" + item.note + "'><i class='fas fa-file-alt'></i></span>";
+        if (item.note && item.note.startsWith("!important")) {
+            noteDiv.innerHTML = "<span class='printerNoteImportant tooltip' title='" + item.note.substring(11) + "'><i class='fas fa-exclamation-circle'></i></span>";
+        } else {
+            noteDiv.innerHTML = "<span class='printerNote tooltip' title='" + item.note + "'><i class='fas fa-file-alt'></i></span>";
+        }
         newCard.append(noteDiv);
 
         printergrid.appendChild(newCard);
