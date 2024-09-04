@@ -286,6 +286,7 @@ function renderGrid(querySnapshot) {
         let itemName = '<a style = "color: white; text-decoration: none;" href="' + item.address +  '" target="_blank">' + item.name + '</a>'
 
         var clean_status = cleanStatus(item.status, item.progress);
+
         // Status
         var status = document.createElement("div");
         status.style.backgroundColor = clean_status[1];
@@ -356,6 +357,10 @@ function renderGrid(querySnapshot) {
             noteDiv.innerHTML = "<span class='printerNoteImportant tooltip' title='" + item.note.substring(11) + "'><i class='fas fa-exclamation-circle'></i></span>";
         } else {
             noteDiv.innerHTML = "<span class='printerNote tooltip' title='" + item.note + "'><i class='fas fa-file-alt'></i></span>";
+        }
+        // Change to disabled if it is disabled
+        if (item.note.substring(11).startsWith("!disabled") || item.note.startsWith("!disabled")) {
+            noteDiv.innerHTML = "<span class='printerNoteImportant tooltip' title='" + item.note.substring(21) + "'><i class='fas fa-times'></i></span>";
         }
         newCard.append(noteDiv);
 
