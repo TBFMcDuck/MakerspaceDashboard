@@ -175,33 +175,39 @@ function switchDisplay () {
 }
 
 // Clean status
-function cleanStatus(status, progress){
+function cleanStatus(item){
     // Cleaning the status
-    if (status == "Printing") {
+    if (item.note.substring(11).startsWith("!disabled") || item.note.startsWith("!disabled")) {
         let statusTextDiv = document.createElement("div");
         statusTextDiv.className = "statusText";
-        statusTextDiv.innerHTML = status + ' (' + Math.round(progress) + '%)';
+        statusTextDiv.innerHTML = "Disabled";
+        return [statusTextDiv, '#cccccc'];
+    }
+    else if (item.status == "Printing") {
+        let statusTextDiv = document.createElement("div");
+        statusTextDiv.className = "statusText";
+        statusTextDiv.innerHTML = item.status + ' (' + Math.round(item.progress) + '%)';
         return [statusTextDiv, "#ff8c00"];
     }
-    else if (status == "Operational") {
+    else if (item.status == "Operational") {
         let statusTextDiv = document.createElement("div");
         statusTextDiv.className = "statusText";
         statusTextDiv.innerHTML = "Operational";
         return [statusTextDiv, '#00ff77'];
     }
-    else if (status == "Paused") {
+    else if (item.status == "Paused") {
         let statusTextDiv = document.createElement("div");
         statusTextDiv.className = "statusText";
-        statusTextDiv.innerHTML = status + ' (' + Math.round(progress) + '%)';
+        statusTextDiv.innerHTML = status + ' (' + Math.round(item.progress) + '%)';
         return [statusTextDiv, '#2b8eff'];
     }
-    else if(status == "Offline after error") {
+    else if(item.status == "Offline after error") {
         let statusTextDiv = document.createElement("div");
         statusTextDiv.className = "statusText";
         statusTextDiv.innerHTML = "(Probably) Turned off " + "<span class = 'tooltip' title='Offline after error'><i class = 'fas fa-info-circle'</i></span>";
         return [statusTextDiv, '#696969'];
     }
-    else if (status == "Offline") {
+    else if (item.status == "Offline") {
         let statusTextDiv = document.createElement("div");
         statusTextDiv.className = "statusText";
         statusTextDiv.innerHTML = "Offline";
@@ -246,7 +252,7 @@ function renderTable(querySnapshot) {
         }
         
         // Cleaned status
-        var cleaned_status_and_bg_color = cleanStatus(item.status, item.progress);
+        var cleaned_status_and_bg_color = cleanStatus(item);
         cell4.appendChild(cleaned_status_and_bg_color[0]);
         cell4.style.backgroundColor = cleaned_status_and_bg_color[1];
         cell4.className = 'status-cell';
@@ -282,10 +288,16 @@ function renderGrid(querySnapshot) {
         var item = doc.data();
         var newCard = document.createElement("div");
 
-        var octoprintLink = '<a href="' + item.address +  '" target="_blank"<i class="fas fa-external-link-alt" style = "color:white;"></i></a>'
-        let itemName = '<a style = "color: white; text-decoration: none;" href="' + item.address +  '" target="_blank">' + item.name + '</a>'
+        if (item.note.substring(11).startsWith("!disabled") || item.note.startsWith("!disabled")) {
+            var octoprintLink = '<a target="_blank"><i class="fas fa-external-link-alt" style="color:#909090; cursor: not-allowed;"></i></a>';
+            var itemName = '<a style = "color: #909090; text-decoration: line-through; cursor: not-allowed;" target="_blank">' + item.name + '</a>'
+        }
+        else {
+            var octoprintLink = '<a href="' + item.address +  '" target="_blank"<i class="fas fa-external-link-alt" style = "color:white;"></i></a>'
+            var itemName = '<a style = "color: white; text-decoration: none;" href="' + item.address +  '" target="_blank">' + item.name + '</a>'
+        }
 
-        var clean_status = cleanStatus(item.status, item.progress);
+        var clean_status = cleanStatus(item);
 
         // Status
         var status = document.createElement("div");
@@ -361,6 +373,9 @@ function renderGrid(querySnapshot) {
         // Change to disabled if it is disabled
         if (item.note.substring(11).startsWith("!disabled") || item.note.startsWith("!disabled")) {
             noteDiv.innerHTML = "<span class='printerNoteImportant tooltip' title='" + item.note.substring(21) + "'><i class='fas fa-times'></i></span>";
+        }
+        noteDiv.onclick = function () {
+            alert(item.note);
         }
         newCard.append(noteDiv);
 
