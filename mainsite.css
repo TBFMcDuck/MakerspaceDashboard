@@ -359,3 +359,23 @@ body {
         position: static; /* Ensure relative positioning if needed */
     }
 }
+
+/* Make scrollbar thin on the side */
+/* For Chrome and Safari */
+::-webkit-scrollbar {
+    width: 10px; /* Adjust as needed */
+}
+
+::-webkit-scrollbar-track {
+    background: #333;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #666; 
+    border-radius: 10px; 
+}
+/* For Firefox */
+* {
+    scrollbar-width: thin; 
+    scrollbar-color: #666 #333; 
+}
