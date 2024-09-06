@@ -183,10 +183,10 @@ function cleanStatus(item){
         statusTextDiv.innerHTML = "Disabled";
         return [statusTextDiv, '#cccccc'];
     }
-    else if (item.status == "Offline after error") {
+    else if (item.status == "Printing") {
         let statusTextDiv = document.createElement("div");
         statusTextDiv.className = "statusText";
-        statusTextDiv.innerHTML = "Printing" + ' (' + Math.round(item.progress) + '%)';
+        statusTextDiv.innerHTML = item.status + ' (' + Math.round(item.progress) + '%)';
         return [statusTextDiv, "#ff8c00"];
     }
     else if (item.status == "Operational") {
@@ -311,7 +311,7 @@ function renderGrid(querySnapshot) {
         var status = document.createElement("div");
         status.style.backgroundColor = clean_status[1];
         status.className = 'printer-status-card';
-        if (item.status === "Offline after error" || item.status === "Paused") {
+        if (item.status === "Printing" || item.status === "Paused") {
             if (item.status === "Paused"){
                 var barColor = '#2b8eff';
             }
@@ -334,11 +334,11 @@ function renderGrid(querySnapshot) {
         newCard.appendChild(status);
 
         // Timeleft
-        if (item.status === "Offline after error" || item.status === "Paused") {
+        if (item.status === "Printing" || item.status === "Paused") {
             let timeLeftDiv = document.createElement("div");
             timeLeftDiv.className = "timeleftDiv";
             
-            let printTime = 1200;
+            let printTime = item.printTime;
             let printTimeUnit = "s";
             if (printTime >= 60) {
                 printTime = printTime/60;
@@ -348,7 +348,7 @@ function renderGrid(querySnapshot) {
                     printTimeUnit = "h";
                 }
             }
-            let timeLeft = 10000;
+            let timeLeft = item.timeLeft + item.printTime;
             let timeLeftUnit = "s";
             if (timeLeft >= 60) {
                 timeLeft = timeLeft/60;
