@@ -1,0 +1,10 @@
+.expIMG {
+    width: 30%;
+}
+
+/* Responsive styles for mobile */
+@media screen and (max-width: 768px) {
+    .expIMG {
+        width: 100%;
+    }
+}

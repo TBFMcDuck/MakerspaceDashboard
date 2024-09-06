@@ -253,6 +253,18 @@ body {
     align-items: center; /* Center vertically */
 }
 
+.positionCodeText {
+    color: #909090;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.placementCodeDiv {
+    position: absolute;
+    top:3px;
+    left: 15px;
+}
+
 .timeleftText {
     color: #909090;
     font-weight: bold;

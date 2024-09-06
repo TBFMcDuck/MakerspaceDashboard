@@ -183,10 +183,10 @@ function cleanStatus(item){
         statusTextDiv.innerHTML = "Disabled";
         return [statusTextDiv, '#cccccc'];
     }
-    else if (item.status == "Printing") {
+    else if (item.status == "Offline after error") {
         let statusTextDiv = document.createElement("div");
         statusTextDiv.className = "statusText";
-        statusTextDiv.innerHTML = item.status + ' (' + Math.round(item.progress) + '%)';
+        statusTextDiv.innerHTML = "Printing" + ' (' + Math.round(item.progress) + '%)';
         return [statusTextDiv, "#ff8c00"];
     }
     else if (item.status == "Operational") {
@@ -288,13 +288,21 @@ function renderGrid(querySnapshot) {
         var item = doc.data();
         var newCard = document.createElement("div");
 
-        if (item.note.substring(11).startsWith("!disabled") || item.note.startsWith("!disabled")) {
-            var octoprintLink = '<a target="_blank"><i class="fas fa-external-link-alt" style="color:#909090; cursor: not-allowed;"></i></a>';
-            var itemName = '<a style = "color: #909090; text-decoration: line-through; cursor: not-allowed;" target="_blank">' + item.name + '</a>'
+        // Shorten too long printernames
+        if (item.name.length > 11) {
+            var name = item.name.substring(0, 11) + "."
         }
         else {
-            var octoprintLink = '<a href="' + item.address +  '" target="_blank"<i class="fas fa-external-link-alt" style = "color:white;"></i></a>'
-            var itemName = '<a style = "color: white; text-decoration: none;" href="' + item.address +  '" target="_blank">' + item.name + '</a>'
+            var name = item.name
+        }
+
+        if (item.note.substring(11).startsWith("!disabled") || item.note.startsWith("!disabled")) {
+            var octoprintLink = '<a target="_blank"><i class="fas fa-external-link-alt" style="color:#909090; cursor: not-allowed;"></i></a>';
+            var itemName = '<a style = "color: #909090; text-decoration: line-through; cursor: not-allowed;" target="_blank">' + name + '</a>'
+        }
+        else {
+            var octoprintLink = '<a href="' + item.address +  '" target="_blank" <i class="fas fa-external-link-alt" style = "color:white;"></i></a>'
+            var itemName = '<a style = "color: white; text-decoration: none;" href="' + item.address +  '" target="_blank">' + name + '</a>'
         }
 
         var clean_status = cleanStatus(item);
@@ -303,7 +311,7 @@ function renderGrid(querySnapshot) {
         var status = document.createElement("div");
         status.style.backgroundColor = clean_status[1];
         status.className = 'printer-status-card';
-        if (item.status === "Printing" || item.status === "Paused") {
+        if (item.status === "Offline after error" || item.status === "Paused") {
             if (item.status === "Paused"){
                 var barColor = '#2b8eff';
             }
@@ -326,11 +334,11 @@ function renderGrid(querySnapshot) {
         newCard.appendChild(status);
 
         // Timeleft
-        if (item.status === "Printing" || item.status === "Paused") {
+        if (item.status === "Offline after error" || item.status === "Paused") {
             let timeLeftDiv = document.createElement("div");
             timeLeftDiv.className = "timeleftDiv";
             
-            let printTime = item.printTime;
+            let printTime = 1200;
             let printTimeUnit = "s";
             if (printTime >= 60) {
                 printTime = printTime/60;
@@ -340,7 +348,7 @@ function renderGrid(querySnapshot) {
                     printTimeUnit = "h";
                 }
             }
-            let timeLeft = item.timeLeft + item.printTime;
+            let timeLeft = 10000;
             let timeLeftUnit = "s";
             if (timeLeft >= 60) {
                 timeLeft = timeLeft/60;
@@ -351,7 +359,7 @@ function renderGrid(querySnapshot) {
                 }
             }
 
-            timeLeftDiv.innerHTML = '<p class="timeleftText">' + printTime.toFixed(1)+ timeLeftUnit + "/" + timeLeft.toFixed(1) + printTimeUnit + '</p>';
+            timeLeftDiv.innerHTML = '<p class="timeleftText">' + printTime.toFixed(1)+ printTimeUnit + "/" + timeLeft.toFixed(1) + timeLeftUnit + '</p>';
             newCard.appendChild(timeLeftDiv);
         }
 
@@ -364,20 +372,28 @@ function renderGrid(querySnapshot) {
         newCard.appendChild(address);
 
         // Printernotes
-        var noteDiv = document.createElement("div");
+        var placementCodeDiv = document.createElement("div");
         if (item.note && item.note.startsWith("!important")) {
-            noteDiv.innerHTML = "<span class='printerNoteImportant tooltip' title='" + item.note.substring(11) + "'><i class='fas fa-exclamation-circle'></i></span>";
+            placementCodeDiv.innerHTML = "<span class='printerNoteImportant tooltip' title='" + item.note.substring(11) + "'><i class='fas fa-exclamation-circle'></i></span>";
         } else {
-            noteDiv.innerHTML = "<span class='printerNote tooltip' title='" + item.note + "'><i class='fas fa-file-alt'></i></span>";
+            placementCodeDiv.innerHTML = "<span class='printerNote tooltip' title='" + item.note + "'><i class='fas fa-file-alt'></i></span>";
         }
         // Change to disabled if it is disabled
         if (item.note.substring(11).startsWith("!disabled") || item.note.startsWith("!disabled")) {
-            noteDiv.innerHTML = "<span class='printerNoteImportant tooltip' title='" + item.note.substring(21) + "'><i class='fas fa-times'></i></span>";
+            placementCodeDiv.innerHTML = "<span class='printerNoteImportant tooltip' title='" + item.note.substring(21) + "'><i class='fas fa-times'></i></span>";
         }
-        noteDiv.onclick = function () {
+        placementCodeDiv.onclick = function () {
             alert(item.note);
         }
-        newCard.append(noteDiv);
+        newCard.append(placementCodeDiv);
+
+        // Printerposition
+        var placementCodeDiv = document.createElement("div");
+        placementCodeDiv.className = "placementCodeDiv"
+        if (item.placementcode) {
+            placementCodeDiv.innerHTML = "<p class='positionCodeText'>" + item.placementcode + "</p>"
+        }  
+        newCard.append(placementCodeDiv);
 
         printergrid.appendChild(newCard);
     });
