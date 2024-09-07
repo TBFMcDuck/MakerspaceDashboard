@@ -163,7 +163,7 @@ function switchDisplay () {
     if (currentDisplayMode === "table") {
         currentDisplayMode = "grid";
         switchBTN.innerHTML = 'Switch to tableview <i class="fas fa-table"></i>'
-        searchInput.placeholder = "Søk etter printer, model, status eller adresse (Ctrl + K)"
+        searchInput.placeholder = "Søk etter printer, model, status, posisjon eller adresse (Ctrl + K)"
     }
     else {
         currentDisplayMode = "table";
