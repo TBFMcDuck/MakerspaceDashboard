@@ -144,13 +144,17 @@ body {
     width: 190px;
     border: #222222 2px solid;
     border-radius: 2px;
-    font-family: 'Roboto', sans-serif; 
-    font-weight: bold;
+    font-family: 'FontAwesome', 'sans-serif';
+    font-size: 1rem;
 }
 
 #filterSelect:focus {
     outline: none; /* Remove outline on focus */
-    border-color: #222222; /* Change border color on focus */
+    border-color: #444444; /* Change border color on focus */
+}
+
+#filterSelect:hover {
+    border-color: #444444;
 }
 
 /* Loading text */

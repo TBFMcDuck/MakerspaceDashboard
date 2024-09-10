@@ -7,6 +7,7 @@
         <link type="text/css" href="mainsite.css" rel="stylesheet"> 
         <!-- Add Font Awesome CDN link -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet"/>
         <!-- Add Favicon -->
         <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
     </head>
@@ -40,14 +41,14 @@
                 Switch to tableview
                 <i class="fas fa-table"></i> <!-- Table icon -->
             </button>
-            <select id = "filterSelect" onchange="filter(this.value);">
-                <option id="filterTitleOption" value="">Filter (No filter)</option>
-                <option value="Operational">Operational</option>
-                <option value = "Offline">Offline</option>
-                <option value="(Probably) Turned off">Turned off</option>
-                <option value="Printing">Printing</option>
-                <option value="Paused">Paused</option>
-                <option value="Unknown">Unknown</option>
+            <select id="filterSelect" onchange="filter(this.value);">
+                <option id="filterTitleOption" value="">&#xf0b0; Filter (No filter)</option>
+                <option value="Operational">&#xf085; Operational</option>
+                <option value="Printing">&#xf02f; Printing</option>
+                <option value="Paused">&#xf28b; Paused</option>
+                <option value="(Probably) Turned off">&#xf011; (Probably) Turned off</option>
+                <option value="Offline">&#xf057; Offline</option>
+                <option value="Unknown">&#xf059; Unknown</option>
             </select>
             <p id="updatedAutoText">
                 Updates automatically <i class="fas fa-check"></i> <!-- Checkmark icon -->
