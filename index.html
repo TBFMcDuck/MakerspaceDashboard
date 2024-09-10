@@ -34,12 +34,21 @@
 
         <!--3D Printere-->
         <!--Search field-->
-        <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Søk etter printer, model, status, posisjon eller adresse (Ctrl + K)">
+        <input type="text" id="searchInput" onkeyup="searchFunction(this.value)" placeholder="Søk etter printer, model, status, posisjon eller adresse (Ctrl + K)">
         <div class="underSearchDiv">
             <button id = "switchDisplayBTN" onclick="switchDisplay()">
                 Switch to tableview
                 <i class="fas fa-table"></i> <!-- Table icon -->
             </button>
+            <select id = "filterSelect" onchange="filter(this.value);">
+                <option id="filterTitleOption" value="">Filter (No filter)</option>
+                <option value="Operational">Operational</option>
+                <option value = "Offline">Offline</option>
+                <option value="(Probably) Turned off">Turned off</option>
+                <option value="Printing">Printing</option>
+                <option value="Paused">Paused</option>
+                <option value="Unknown">Unknown</option>
+            </select>
             <p id="updatedAutoText">
                 Updates automatically <i class="fas fa-check"></i> <!-- Checkmark icon -->
             </p>

@@ -48,11 +48,21 @@ document.addEventListener('keydown', function(event) {
 });
 
 // Search
-function searchFunction() {
+function searchFunction(input) {
   // Declare variables
-  var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById("searchInput");
-  filter = input.value.toUpperCase();
+  var filter, table, tr, td, i, txtValue;
+
+  if (!input) {
+    input = "";
+  }
+
+  filter = input.toUpperCase();
+
+  if (!(filter.includes(current_filter.toUpperCase()))) {
+    filter = filter + "#" + current_filter.toUpperCase();
+  }
+
+  var anyPrinterMatchesQuery = false;
 
   if (currentDisplayMode === "table"){
     table = document.getElementById("printerTable");
@@ -65,6 +75,7 @@ function searchFunction() {
         txtValue = td.textContent || td.innerText;
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
             tr[i].style.display = "";
+            anyPrinterMatchesQuery = true;
         } else {
             tr[i].style.display = "none";
         }
@@ -72,17 +83,34 @@ function searchFunction() {
     }
     }
     else {
+        if (filter.includes("#")) {
+            var userSearch = filter.split("#")[0];
+            var filter_selected = filter.split("#")[1];
+        }
+        else {
+            var userSearch = filter;
+            var filter_selected = "";
+        }
         grid = document.getElementById("printerGrid");
         var gridItems = grid.children; // Get the child elements of the grid
         for (i = 0; i < gridItems.length; i++) {
             child = gridItems[i];
             txtValue = child.textContent || child.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            if ((txtValue.toUpperCase().indexOf(userSearch) > -1) && (txtValue.toUpperCase().indexOf(filter_selected) > -1)) {
                 child.style.display = "";
+                anyPrinterMatchesQuery = true;
             } else {
                 child.style.display = "none";
             }
         }
+    }
+    if (!anyPrinterMatchesQuery) {
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('loading').innerHTML = '<i class="fas fa-exclamation-circle"></i> There are no printers matching your search and filter.';
+    }
+    else {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('loading').innerHTML = '(Fetching printer data...)';
     }
 }
 
@@ -551,4 +579,14 @@ function updateLocalQuery(updatedQuery) {
         // Convert the map back to an array
         querySnapshotLocal = Array.from(localDocsMap.values());
     }
+}
+
+// Filter
+filterSelect = document.getElementById("filterSelect");
+
+let current_filter = ""
+
+function filter(searchWord) {
+    current_filter = searchWord
+    searchFunction(searchInput.value);
 }

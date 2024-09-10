@@ -136,6 +136,23 @@ body {
     width: 190px;
 }
 
+/* Filter */
+#filterSelect {
+    background-color: #383838;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 190px;
+    border: #222222 2px solid;
+    border-radius: 2px;
+    font-family: 'Roboto', sans-serif; 
+    font-weight: bold;
+}
+
+#filterSelect:focus {
+    outline: none; /* Remove outline on focus */
+    border-color: #222222; /* Change border color on focus */
+}
+
 /* Loading text */
 #loading {
     display: none;
@@ -353,6 +370,10 @@ body {
         width: 95%;
         font-size: large;
         height: 40px;
+    }
+
+    #filterSelect {
+        display: none;
     }
     
     #updatedAutoText {
