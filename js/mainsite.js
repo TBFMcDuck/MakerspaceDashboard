@@ -72,13 +72,13 @@ function searchFunction(input) {
     for (i = 0; i < tr.length; i++) {
         td = tr[i].getElementsByTagName("td")[0];
         if (td) {
-        txtValue = td.textContent || td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            tr[i].style.display = "";
-            anyPrinterMatchesQuery = true;
-        } else {
-            tr[i].style.display = "none";
-        }
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+                anyPrinterMatchesQuery = true;
+            } else {
+                tr[i].style.display = "none";
+            }
         }
     }
     }
@@ -192,11 +192,13 @@ function switchDisplay () {
         currentDisplayMode = "grid";
         switchBTN.innerHTML = 'Switch to tableview <i class="fas fa-table"></i>'
         searchInput.placeholder = "Søk etter printer, model, status, posisjon eller adresse (Ctrl + K)"
+        filterSelect.style.display = "block";
     }
     else {
         currentDisplayMode = "table";
         switchBTN.innerHTML = 'Switch to gridview <i class="fas fa-th">'
         searchInput.placeholder = "Søk etter printer (Ctrl + K)"
+        filterSelect.style.display = "none";
     }
 
     refresh();
