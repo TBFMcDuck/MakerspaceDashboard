@@ -5,6 +5,11 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
     var mobileUser = false;
   }
 
+// Problemdiv
+document.getElementById("dismissProblemDivButton").addEventListener("click", function() {
+    document.getElementById("problemdiv").style.display = "none";
+})
+
 // Hotkey for search input
 function focusSearch() {
     document.getElementById("searchInput").focus();
@@ -402,20 +407,95 @@ function renderGrid(querySnapshot) {
         newCard.appendChild(address);
 
         // Printernotes
-        var placementCodeDiv = document.createElement("div");
-        if (item.note && item.note.startsWith("!important")) {
-            placementCodeDiv.innerHTML = "<span class='printerNoteImportant tooltip' title='" + item.note.substring(11) + "'><i class='fas fa-exclamation-circle'></i></span>";
-        } else {
-            placementCodeDiv.innerHTML = "<span class='printerNote tooltip' title='" + item.note + "'><i class='fas fa-file-alt'></i></span>";
-        }
-        // Change to disabled if it is disabled
+        var printerNoteDiv = document.createElement("div");
         if (item.note.substring(11).startsWith("!disabled") || item.note.startsWith("!disabled")) {
-            placementCodeDiv.innerHTML = "<span class='printerNoteImportant tooltip' title='" + item.note.substring(21) + "'><i class='fas fa-times'></i></span>";
+            var printerNoteSpan = document.createElement("span");
+            printerNoteSpan.className = "printerNoteImportant";
+            printerNoteSpan.innerHTML = "<i class='fas fa-exclamation-circle'></i>";
+            printerNoteDiv.appendChild(printerNoteSpan);
+
+            var note 
+            if (item.note.startsWith("!important")) {
+                note = item.note.substring(21);
+            }
+            else {
+                note = item.note.substring(10);
+            }
+
+            var printerNoteHover = document.createElement("div");
+            printerNoteHover.className = 'printernoteHover';
+            printerNoteHover.innerHTML = "<p>" + note + "</p>";
+            printerNoteHover.style.display = "none"; // Initially hidden
+
+            printerNoteDiv.addEventListener("mouseover", function() {
+                show_note(printerNoteHover);
+            });
+
+            printerNoteDiv.addEventListener("mouseout", function() {
+                hide_note(printerNoteHover);
+            });
+
+            printerNoteDiv.appendChild(printerNoteHover);
+        } 
+        else if (item.note && item.note.startsWith("!important")) {
+            var printerNoteSpan = document.createElement("span");
+            printerNoteSpan.className = "printerNoteImportant";
+            printerNoteSpan.innerHTML = "<i class='fas fa-exclamation-circle'></i>";
+            printerNoteDiv.appendChild(printerNoteSpan);
+
+            var printerNoteHover = document.createElement("div");
+            printerNoteHover.className = 'printernoteHover';
+            printerNoteHover.innerHTML = "<p>" + item.note.substring(11) + "</p>";
+            printerNoteHover.style.display = "none"; // Initially hidden
+
+            printerNoteDiv.addEventListener("mouseover", function() {
+                show_note(printerNoteHover);
+            });
+
+            printerNoteDiv.addEventListener("mouseout", function() {
+                hide_note(printerNoteHover);
+            });
+
+            printerNoteDiv.appendChild(printerNoteHover);
         }
-        placementCodeDiv.onclick = function () {
+        else {
+            var printerNoteSpan = document.createElement("span");
+            printerNoteSpan.className = "printerNote";
+            printerNoteSpan.innerHTML = "<i class='fas fa-file-alt'></i>";
+            printerNoteDiv.appendChild(printerNoteSpan);
+
+            var printerNoteHover = document.createElement("div");
+            printerNoteHover.className = 'printernoteHover';
+            printerNoteHover.innerHTML = "<p>" + item.note + "</p>";
+            printerNoteHover.style.display = "none"; // Initially hidden
+
+            printerNoteDiv.addEventListener("mouseover", function() {
+                show_note(printerNoteHover);
+            });
+
+            printerNoteDiv.addEventListener("mouseout", function() {
+                hide_note(printerNoteHover);
+            });
+
+            printerNoteDiv.appendChild(printerNoteHover);
+        }
+
+        printerNoteDiv.onclick = function () {
             alert(item.note);
+        };
+
+        newCard.append(printerNoteDiv);
+
+        // PrinterNote
+        function show_note(noteHover) {
+            console.log("Showing note");
+            noteHover.style.display = "block";
         }
-        newCard.append(placementCodeDiv);
+
+        function hide_note(noteHover) {
+            console.log("Hiding note");
+            noteHover.style.display = "none";
+        }
 
         // Printerposition
         var placementCodeDiv = document.createElement("div");
@@ -592,3 +672,4 @@ function filter(searchWord) {
     current_filter = searchWord
     searchFunction(searchInput.value);
 }
+

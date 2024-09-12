@@ -1,3 +1,24 @@
+/* Problemdiv */
+#problemdiv {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #ff0000; /* Light red background */
+    padding:5px;
+}
+
+#problemtext {
+    color: #333; /* Dark text for readability */
+}
+
+#dismissProblemDivButton {
+    background-color: #909090;
+    border-radius: 50%;
+    margin-right: 5%;
+    cursor: pointer;
+}
+
 /* Existing styles */
 html {
     scroll-behavior: smooth;
@@ -256,11 +277,45 @@ body {
     right: 15px;
 }
 
+.printerNote:hover {
+    cursor: pointer;
+}
+
 .printerNoteImportant {
     color:#FF4500;
     position: absolute;
     top:15px;
     right: 15px;
+    cursor: pointer;
+}
+
+/* Tooltip container */
+.printernoteHover {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    right: 0px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding-left: 4%;
+    padding-right: 4%;
+    border-radius: 5px;
+    border: #222222 solid 3px;
+    z-index: 1;
+    width: 200px;
+}
+
+/* Tooltip arrow */
+.printernoteHover::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 90%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
 }
 
 /* Status column */
