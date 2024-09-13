@@ -1,6 +1,7 @@
 /* Problemdiv */
 #problemdiv {
-    display: flex;
+    display: none;
+    /* display: flex; */
     flex-direction: row;
     align-items: center;
     justify-content: center;
