@@ -488,12 +488,10 @@ function renderGrid(querySnapshot) {
 
         // PrinterNote
         function show_note(noteHover) {
-            console.log("Showing note");
             noteHover.style.display = "block";
         }
 
         function hide_note(noteHover) {
-            console.log("Hiding note");
             noteHover.style.display = "none";
         }
 
