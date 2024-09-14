@@ -1,0 +1,78 @@
+[
+    {
+        "placementcode": "C4",
+        "address": "http://192.168.3.105:5000/"
+    },
+    {
+        "placementcode": "D4",
+        "address": "http://192.168.3.105:5001/"
+    },
+    {
+        "placementcode": "A4",
+        "address": "http://192.168.3.102:5003/"
+    },
+    {
+        "placementcode": "B1",
+        "address": "http://192.168.3.104:5000/"
+    },
+    {
+        "placementcode": "B2",
+        "address": "http://192.168.3.104:5001/"
+    },
+    {
+        "placementcode": "B3",
+        "address": "http://192.168.3.104:5002/"
+    },
+    {
+        "placementcode": "C3",
+        "address": "http://192.168.3.110:5000/"
+    },
+    {
+        "placementcode": "C1",
+        "address": "http://192.168.3.110:5002/"
+    },
+    {
+        "placementcode": "A1",
+        "address": "http://192.168.3.103:5000/"
+    },
+    {
+        "placementcode": "A3",
+        "address": "http://192.168.3.102:5000/"
+    },
+    {
+        "placementcode": "A2",
+        "address": "http://192.168.3.103:5001/"
+    },
+    {
+        "placementcode": "D2",
+        "address": "http://192.168.3.109:5004/"
+    },
+    {
+        "placementcode": "D1",
+        "address": "http://192.168.3.109:5003/"
+    },
+    {
+        "placementcode": "B4",
+        "address": "http://192.168.3.110:5001/"
+    },
+    {
+        "placementcode": "C2",
+        "address": "http://192.168.3.109:5005/"
+    },
+    {
+        "placementcode": "D3",
+        "address": "http://192.168.3.105:5002/"
+    },
+    {
+        "placementcode": "F1",
+        "address": "http://192.168.3.101:5000/"
+    },
+    {
+        "placementcode": "E1",
+        "address": "http://192.168.3.106:5000/"
+    },
+    {
+        "placementcode": "E2",
+        "address": "http://192.168.3.106:5002/"
+    }
+]

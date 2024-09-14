@@ -583,6 +583,29 @@ function refresh() {
     subscribeToFirestore();
 }
 
+// Function to simulate the resource-exhausted error
+function simulateResourceExhaustedError() {
+    const simulatedError = {
+        code: 'resource-exhausted'
+    };
+    handleFirestoreError(simulatedError);
+}
+
+// Function to handle Firestore errors
+function handleFirestoreError(error) {
+    if (error.code === 'resource-exhausted') {
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('loading').innerHTML = 'Quota exceeded. Please try again tomorrow <i class="fas fa-database"></i> open backup.';
+        document.getElementById("showBackupButton").style.display = "block";
+        updatingText.innerHTML = 'Updating failed due to quota limit <i class="fas fa-exclamation-circle"></i>';
+    } else {
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('loading').innerHTML = 'Failed to fetch from Firestore.';
+        updatingText.innerHTML = 'Updating failed <i class="fas fa-exclamation-circle"></i>';
+    }
+    console.log(error);
+}
+
 function subscribeToFirestore() {
     if (unsubscribe) {
         unsubscribe();
@@ -599,7 +622,6 @@ function subscribeToFirestore() {
         if (!shouldUpdate) return;
         
         updateLocalQuery(querySnapshot);
-
 
         if (currentDisplayMode === "table") {
             renderTable(querySnapshotLocal);
@@ -623,16 +645,7 @@ function subscribeToFirestore() {
         }
 
     }, error => {
-        if (error.code === 'resource-exhausted') {
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('loading').innerHTML = 'Quota exceeded. Please try again tomorrow.';
-            updatingText.innerHTML = 'Updating failed due to quota limit <i class="fas fa-exclamation-circle"></i>';
-        } else {
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('loading').innerHTML = 'Failed to fetch from Firestore.';
-            updatingText.innerHTML = 'Updating failed <i class="fas fa-exclamation-circle"></i>';
-        }
-        console.error('Error:', error);
+        handleFirestoreError(error);
     });
 }
 
@@ -670,4 +683,10 @@ function filter(searchWord) {
     current_filter = searchWord
     searchFunction(searchInput.value);
 }
+
+// Backup
+document.getElementById("showBackupButton").addEventListener("click", function() {
+    const backupUrl = "/makerspacedashboard/backup";
+    window.location.href = backupUrl;
+})
 
