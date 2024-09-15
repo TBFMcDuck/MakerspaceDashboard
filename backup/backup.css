@@ -17,3 +17,10 @@
     padding-right: 10px;
     padding-left: 10px;
 }
+
+#infotext {
+    padding-top: 10px;
+    font-size: large;
+    font-weight: bold;
+    text-align: center;
+}
