@@ -392,22 +392,6 @@ body {
     color: white; /* Ensure text is visible */
 }
 
-/* Backup */
-#showBackupDiv {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 10px;
-}
-
-#showBackupButton {
-    display: none;
-    background-color: #383838;
-    margin-left: 10px;
-    margin-right: 10px;
-    width: 190px;
-}
-
 /* Responsive styles for mobile */
 @media screen and (max-width: 768px) {
     /* Remove ordinary title */
