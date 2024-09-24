@@ -232,6 +232,13 @@ body {
     height: 250px;
     flex-grow: 1;
     position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+}
+
+.printer-card:hover {
+    transform: translateY(-5px); /* Move the card up */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Add shadow for hovering effect */
 }
 
 .printer-card h3 {
@@ -434,7 +441,11 @@ body {
     }
 
     #filterSelect {
-        display: none;
+        width: 95%;
+        font-size: large;
+        height: 40px;
+        text-align: center;
+        margin-top: 4px;
     }
     
     #updatedAutoText {

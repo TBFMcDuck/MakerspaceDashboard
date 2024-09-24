@@ -84,6 +84,7 @@ function subscribeToFirestore() {
     });
 }
 
+// If there is a change in only 1 printer, we only change that printers value in the local query to save on reads
 function updateLocalQuery(updatedQuery) {
     if (querySnapshotLocal === null) {
         querySnapshotLocal = updatedQuery;
@@ -149,6 +150,193 @@ window.addEventListener('focus', () => {
 // ------------------------------------------------------
 //                  Displaying the data
 // ------------------------------------------------------
+// Handy functions
+function shortenName(name, maxLength) {
+    if (name.length > maxLength) {
+        return name.substring(0, 11) + "."
+    }
+    else {
+        return name
+    }
+}
+function isDisabled(note) {
+    return note.substring(11).startsWith("!disabled") || note.startsWith("!disabled")
+}
+function disabledLinkAndNameHTML(name) {
+    return [
+        '<a target="_blank"><i class="fas fa-external-link-alt" style="color:#909090; cursor: not-allowed;"></i></a>', 
+        '<a style = "color: #909090; text-decoration: line-through; cursor: not-allowed;" target="_blank">' + name + '</a>'
+    ]
+}
+function enabledLinkAndNameHTML(name, address) {
+    return [
+        '<a href="' + address +  '" target="_blank" <i class="fas fa-external-link-alt" style = "color:white;"></i></a>',
+        '<a style = "color: white; text-decoration: none;" href="' + address +  '" target="_blank">' + name + '</a>'
+    ]
+}
+function setOctoprintLinkAndName(note, name, address) {
+    if (isDisabled(note)) {
+        return disabledLinkAndNameHTML(name);
+    }
+    else {
+        return enabledLinkAndNameHTML(name, address);
+    }
+}
+function lastUpdatedHTML(updateTime) {
+    var element = document.createElement("p");
+    element.innerHTML = '<p class=printer-bottom-text> Fetched: ' + updateTime+ '</p>';
+    return element
+}
+function timeLeftHTML(printTime, timeLeft){
+    let timeLeftDiv = document.createElement("div");
+    timeLeftDiv.className = "timeleftDiv";
+
+    timeLeft = timeLeft + printTime
+
+    let printTimeUnit = "s";
+    if (printTime >= 60) {
+        printTime = printTime/60;
+        printTimeUnit = "min";
+        if (printTime >= 60) {
+            printTime = printTime/60;
+            printTimeUnit = "h";
+        }
+    }
+    let timeLeftUnit = "s";
+    if (timeLeft >= 60) {
+        timeLeft = timeLeft/60;
+        timeLeftUnit = "min";
+        if (timeLeft >= 60) {
+            timeLeft = timeLeft/60;
+            timeLeftUnit = "h";
+        }
+    }
+
+    timeLeftDiv.innerHTML = '<p class="timeleftText">' + printTime.toFixed(1)+ printTimeUnit + "/" + timeLeft.toFixed(1) + timeLeftUnit + '</p>';
+    return timeLeftDiv
+}
+function addressHTML(address) {
+    var addressP = document.createElement("p");
+    addressP.innerHTML = '<p class="adressBottomText">' + address + '<p>';
+    return addressP
+}
+function placementCodeHTML(placementcode) {
+    var element = document.createElement("div");
+    element.className = "placementCodeDiv"
+    if (placementcode) {
+        element.innerHTML = "<p class='positionCodeText'>" + placementcode + "</p>"
+    }  
+    return element
+}
+function printerNoteHTML(note) {
+    var printerNoteDiv = document.createElement("div");
+    if (isDisabled(note)) {
+        var printerNoteSpan = document.createElement("span");
+        printerNoteSpan.className = "printerNoteImportant";
+        printerNoteSpan.innerHTML = "<i class='fas fa-exclamation-circle'></i>";
+        printerNoteDiv.appendChild(printerNoteSpan);
+
+        var newNote 
+        if (note.startsWith("!important")) {
+            newNote = note.substring(21);
+        }
+        else {
+            newNote = note.substring(10);
+        }
+
+        var printerNoteHover = document.createElement("div");
+        printerNoteHover.className = 'printernoteHover';
+        printerNoteHover.innerHTML = "<p>" + newNote + "</p>";
+        printerNoteHover.style.display = "none"; // Initially hidden
+
+        printerNoteDiv.addEventListener("mouseover", function() {
+            show_note(printerNoteHover);
+        });
+
+        printerNoteDiv.addEventListener("mouseout", function() {
+            hide_note(printerNoteHover);
+        });
+
+        printerNoteDiv.appendChild(printerNoteHover);
+    } 
+    else if (note && note.startsWith("!important")) {
+        var printerNoteSpan = document.createElement("span");
+        printerNoteSpan.className = "printerNoteImportant";
+        printerNoteSpan.innerHTML = "<i class='fas fa-exclamation-circle'></i>";
+        printerNoteDiv.appendChild(printerNoteSpan);
+
+        var printerNoteHover = document.createElement("div");
+        printerNoteHover.className = 'printernoteHover';
+        printerNoteHover.innerHTML = "<p>" + note.substring(11) + "</p>";
+        printerNoteHover.style.display = "none"; // Initially hidden
+
+        printerNoteDiv.addEventListener("mouseover", function() {
+            show_note(printerNoteHover);
+        });
+
+        printerNoteDiv.addEventListener("mouseout", function() {
+            hide_note(printerNoteHover);
+        });
+
+        printerNoteDiv.appendChild(printerNoteHover);
+    }
+    else {
+        var printerNoteSpan = document.createElement("span");
+        printerNoteSpan.className = "printerNote";
+        printerNoteSpan.innerHTML = "<i class='fas fa-file-alt'></i>";
+        printerNoteDiv.appendChild(printerNoteSpan);
+
+        var printerNoteHover = document.createElement("div");
+        printerNoteHover.className = 'printernoteHover';
+        printerNoteHover.innerHTML = "<p>" + note + "</p>";
+        printerNoteHover.style.display = "none"; // Initially hidden
+
+        printerNoteDiv.addEventListener("mouseover", function() {
+            show_note(printerNoteHover);
+        });
+
+        printerNoteDiv.addEventListener("mouseout", function() {
+            hide_note(printerNoteHover);
+        });
+
+        printerNoteDiv.appendChild(printerNoteHover);
+    }
+
+    printerNoteDiv.onclick = function () {
+        alert(item.note);
+    };
+
+    // Funcitions
+    function show_note(noteHover) {
+        noteHover.style.display = "block";
+    }
+
+    function hide_note(noteHover) {
+        noteHover.style.display = "none";
+    }
+
+    return printerNoteDiv
+}
+function statusHTML(status, progress, clean_status) {
+    var statusElement = document.createElement("div");
+    statusElement.style.backgroundColor = clean_status[1];
+    statusElement.className = 'printer-status-card';
+    if (status === "Printing" || status === "Paused") {
+        if (status === "Paused"){
+            var barColor = '#2b8eff';
+        }
+        else {
+            var barColor = "#ff8c00";
+        }
+        let progressBar = new Progress({parent: statusElement, cornerRadius: "3px", barColor: barColor, backgroundColor: "#383838", minPercent: 0.01});
+        progressBar.setProgress(progress/100);
+        progressBar.addMidElement(clean_status[0]);
+    }
+    else {
+        statusElement.appendChild(clean_status[0]);
+    }
+    return statusElement
+}
 
 // Switch display modes
 var currentDisplayMode = "grid"
@@ -215,6 +403,12 @@ function cleanStatus(item){ // Returns the div and bg color for it.
         statusTextDiv.className = "statusText";
         statusTextDiv.innerHTML = "Offline";
         return [statusTextDiv, '#872727'];
+    }
+    else if (item.status == "Cancelling") {
+        let statusTextDiv = document.createElement("div");
+        statusTextDiv.className = "statusText";
+        statusTextDiv.innerHTML = "Cancelling";
+        return [statusTextDiv, '#FF6347'];
     }
     else {
         let statusTextDiv = document.createElement("div");
@@ -284,187 +478,35 @@ function renderGrid(querySnapshot) {
         var item = doc.data();
         var newCard = document.createElement("div");
 
-        // Shorten too long printernames
-        if (item.name.length > 11) {
-            var name = item.name.substring(0, 11) + "."
-        }
-        else {
-            var name = item.name
-        }
-
-        if (item.note.substring(11).startsWith("!disabled") || item.note.startsWith("!disabled")) {
-            var octoprintLink = '<a target="_blank"><i class="fas fa-external-link-alt" style="color:#909090; cursor: not-allowed;"></i></a>';
-            var itemName = '<a style = "color: #909090; text-decoration: line-through; cursor: not-allowed;" target="_blank">' + name + '</a>'
-        }
-        else {
-            var octoprintLink = '<a href="' + item.address +  '" target="_blank" <i class="fas fa-external-link-alt" style = "color:white;"></i></a>'
-            var itemName = '<a style = "color: white; text-decoration: none;" href="' + item.address +  '" target="_blank">' + name + '</a>'
-        }
-
+        // Necesarry variables
+        var name = shortenName(item.name, maxLength=11);
         var clean_status = cleanStatus(item);
 
-        // Status
-        var status = document.createElement("div");
-        status.style.backgroundColor = clean_status[1];
-        status.className = 'printer-status-card';
+        // Create UI Elements
+        var octoprintLink = setOctoprintLinkAndName(item.note, name, item.address)[0]
+        var itemName = setOctoprintLinkAndName(item.note, name, item.address)[1]
+        var lastUpdatedElement = lastUpdatedHTML(item.updateTime)
+        var addressElement = addressHTML(item.address)
+        var placementCodeDiv = placementCodeHTML(item.placementcode)
+        var printerNoteDiv = printerNoteHTML(item.note)
+        var status = statusHTML(item.status, item.progress, clean_status);
+        // Potential UI elements
         if (item.status === "Printing" || item.status === "Paused") {
-            if (item.status === "Paused"){
-                var barColor = '#2b8eff';
-            }
-            else {
-                var barColor = "#ff8c00";
-            }
-            let progressBar = new Progress({parent: status, cornerRadius: "3px", barColor: barColor, backgroundColor: "#383838", minPercent: 0.01});
-            progressBar.setProgress(item.progress/100);
-            progressBar.addMidElement(clean_status[0]);
-        }
-        else {
-            status.appendChild(clean_status[0]);
+            var timeLeftElement = timeLeftHTML(item.printTime, item.timeLeft)
         }
 
-        var lastUpdated = document.createElement("p");
-        lastUpdated.innerHTML = '<p class=printer-bottom-text> Fetched: ' + item.updateTime + '</p>';
-
+        // Add everything to the card
         newCard.className = "printer-card";
         newCard.innerHTML = '<h3>' + itemName + " " + octoprintLink + '</h3>' + '<h4> Model: ' + item.type + '</h4>'
-        newCard.appendChild(status);
-
-        // Timeleft
-        if (item.status === "Printing" || item.status === "Paused") {
-            let timeLeftDiv = document.createElement("div");
-            timeLeftDiv.className = "timeleftDiv";
-            
-            let printTime = item.printTime;
-            let printTimeUnit = "s";
-            if (printTime >= 60) {
-                printTime = printTime/60;
-                printTimeUnit = "min";
-                if (printTime >= 60) {
-                    printTime = printTime/60;
-                    printTimeUnit = "h";
-                }
-            }
-            let timeLeft = item.timeLeft + item.printTime;
-            let timeLeftUnit = "s";
-            if (timeLeft >= 60) {
-                timeLeft = timeLeft/60;
-                timeLeftUnit = "min";
-                if (timeLeft >= 60) {
-                    timeLeft = timeLeft/60;
-                    timeLeftUnit = "h";
-                }
-            }
-
-            timeLeftDiv.innerHTML = '<p class="timeleftText">' + printTime.toFixed(1)+ printTimeUnit + "/" + timeLeft.toFixed(1) + timeLeftUnit + '</p>';
-            newCard.appendChild(timeLeftDiv);
-        }
-
-        newCard.appendChild(lastUpdated);
-
-        // Adress
-        var address = document.createElement("p");
-        address.innerHTML = '<p class="adressBottomText">' + item.address + '<p>';
         
-        newCard.appendChild(address);
-
-        // Printernotes
-        var printerNoteDiv = document.createElement("div");
-        if (item.note.substring(11).startsWith("!disabled") || item.note.startsWith("!disabled")) {
-            var printerNoteSpan = document.createElement("span");
-            printerNoteSpan.className = "printerNoteImportant";
-            printerNoteSpan.innerHTML = "<i class='fas fa-exclamation-circle'></i>";
-            printerNoteDiv.appendChild(printerNoteSpan);
-
-            var note 
-            if (item.note.startsWith("!important")) {
-                note = item.note.substring(21);
-            }
-            else {
-                note = item.note.substring(10);
-            }
-
-            var printerNoteHover = document.createElement("div");
-            printerNoteHover.className = 'printernoteHover';
-            printerNoteHover.innerHTML = "<p>" + note + "</p>";
-            printerNoteHover.style.display = "none"; // Initially hidden
-
-            printerNoteDiv.addEventListener("mouseover", function() {
-                show_note(printerNoteHover);
-            });
-
-            printerNoteDiv.addEventListener("mouseout", function() {
-                hide_note(printerNoteHover);
-            });
-
-            printerNoteDiv.appendChild(printerNoteHover);
-        } 
-        else if (item.note && item.note.startsWith("!important")) {
-            var printerNoteSpan = document.createElement("span");
-            printerNoteSpan.className = "printerNoteImportant";
-            printerNoteSpan.innerHTML = "<i class='fas fa-exclamation-circle'></i>";
-            printerNoteDiv.appendChild(printerNoteSpan);
-
-            var printerNoteHover = document.createElement("div");
-            printerNoteHover.className = 'printernoteHover';
-            printerNoteHover.innerHTML = "<p>" + item.note.substring(11) + "</p>";
-            printerNoteHover.style.display = "none"; // Initially hidden
-
-            printerNoteDiv.addEventListener("mouseover", function() {
-                show_note(printerNoteHover);
-            });
-
-            printerNoteDiv.addEventListener("mouseout", function() {
-                hide_note(printerNoteHover);
-            });
-
-            printerNoteDiv.appendChild(printerNoteHover);
-        }
-        else {
-            var printerNoteSpan = document.createElement("span");
-            printerNoteSpan.className = "printerNote";
-            printerNoteSpan.innerHTML = "<i class='fas fa-file-alt'></i>";
-            printerNoteDiv.appendChild(printerNoteSpan);
-
-            var printerNoteHover = document.createElement("div");
-            printerNoteHover.className = 'printernoteHover';
-            printerNoteHover.innerHTML = "<p>" + item.note + "</p>";
-            printerNoteHover.style.display = "none"; // Initially hidden
-
-            printerNoteDiv.addEventListener("mouseover", function() {
-                show_note(printerNoteHover);
-            });
-
-            printerNoteDiv.addEventListener("mouseout", function() {
-                hide_note(printerNoteHover);
-            });
-
-            printerNoteDiv.appendChild(printerNoteHover);
-        }
-
-        printerNoteDiv.onclick = function () {
-            alert(item.note);
-        };
-
-        newCard.append(printerNoteDiv);
-
-        // PrinterNote
-        function show_note(noteHover) {
-            console.log("Showing note");
-            noteHover.style.display = "block";
-        }
-
-        function hide_note(noteHover) {
-            console.log("Hiding note");
-            noteHover.style.display = "none";
-        }
-
-        // Printerposition
-        var placementCodeDiv = document.createElement("div");
-        placementCodeDiv.className = "placementCodeDiv"
-        if (item.placementcode) {
-            placementCodeDiv.innerHTML = "<p class='positionCodeText'>" + item.placementcode + "</p>"
-        }  
+        newCard.appendChild(status);
+        newCard.appendChild(lastUpdatedElement);
+        newCard.appendChild(addressElement);
         newCard.append(placementCodeDiv);
+        newCard.append(printerNoteDiv);
+        if (item.status === "Printing" || item.status === "Paused") {
+            newCard.append(timeLeftElement);
+        }
 
         printergrid.appendChild(newCard);
     });
