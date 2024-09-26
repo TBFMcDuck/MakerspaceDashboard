@@ -1,8 +1,9 @@
 .expIMG {
     width: 30%;
 }
-body {
-    color:white;
+
+p, h2 {
+    color: white;
 }
 
 /* Responsive styles for mobile */

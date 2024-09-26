@@ -2,7 +2,7 @@
     color: aliceblue;
 }
 .explenationText {
-    color: #444444;
+    color: #909090;
 }
 
 .printer-card {
@@ -23,4 +23,5 @@
     font-size: large;
     font-weight: bold;
     text-align: center;
+    color: white;
 }
