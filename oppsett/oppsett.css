@@ -1,6 +1,9 @@
 .expIMG {
     width: 30%;
 }
+body {
+    color:white;
+}
 
 /* Responsive styles for mobile */
 @media screen and (max-width: 768px) {
