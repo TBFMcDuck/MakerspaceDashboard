@@ -303,7 +303,7 @@ function printerNoteHTML(note) {
     }
 
     printerNoteDiv.onclick = function () {
-        alert(item.note);
+        alert(note);
     };
 
     // Funcitions

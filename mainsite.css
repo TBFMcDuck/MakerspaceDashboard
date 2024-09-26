@@ -156,7 +156,10 @@ body {
     background-color: #383838;
     margin-left: 10px;
     margin-right: 10px;
+    padding: 10px 10px 10px 10px;
     width: 190px;
+    color: #909090;
+    font-size: 1rem;
 }
 
 /* Filter */
@@ -169,10 +172,11 @@ body {
     border-radius: 2px;
     font-family: 'FontAwesome', 'sans-serif';
     font-size: 1rem;
+    color: #909090;
+    padding: 10px 10px 10px 10px;
 }
 
 #filterSelect:focus {
-    outline: none; /* Remove outline on focus */
     border-color: #444444; /* Change border color on focus */
 }
 
@@ -263,18 +267,18 @@ body {
 }
 
 .printer-bottom-text {
-    color: #383838;
+    color: #909090;
     position: absolute;
-    bottom: 10px;
+    bottom: 20px;
     left: 50%; /* Center horizontally */
     transform: translateX(-50%); /* Adjust position to center */
 }
 
 .adressBottomText {
-    color: #292929;
-    font-size: 10px;
+    color: #484848;
+    font-size: 12px;
     position: absolute;
-    bottom: -10px;
+    bottom: -5px;
     left: 50%; /* Center horizontally */
     transform: translateX(-50%); /* Adjust position to center */
 }
