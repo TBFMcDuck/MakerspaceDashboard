@@ -31,3 +31,7 @@ function scrollToSearchResult() {
         behavior: 'smooth'
     });
 }
+
+document.getElementById("updatedAutoText").addEventListener("click", function () {
+    alert("When a printer's status or values is changed, it will be updated automaticly in the background. No need to refresh!");
+})

@@ -17,11 +17,12 @@
         <script src="js/sitewide.js" defer></script>
         <script src="js/progress.js"></script>
         
+        <!--If there is a problem in the system, use this barebowns banner. Show it in the CSS-->
         <div id="problemdiv">
             <button id="dismissProblemDivButton">
                 <i class="fas fa-times"></i>
             </button>
-            <h3 id="problemtext">(12.09.2024 09:05) Because of a bug in the system, printerupdates are not available, this should be fixed by tomorrow.</h3>
+            <h3 id="problemtext">Nothing here</h3>
         </div>
 
         <!--Top nav-->
@@ -44,8 +45,9 @@
 
         <!--3D Printere-->
         <!--Search field-->
-        <input type="text" id="searchInput" onkeyup="applySearchFilter(this.value)" placeholder="Søk etter printer, model, status, posisjon eller adresse (Ctrl + K)">
+        
         <div class="underSearchDiv">
+            <input type="text" id="searchInput" onkeyup="applySearchFilter(this.value)" placeholder="Søk etter printer, model, status, posisjon eller adresse (Ctrl + K)">
             <button id = "switchDisplayBTN" onclick="switchDisplay()">
                 Switch to tableview
                 <i class="fas fa-table"></i> <!-- Table icon -->
@@ -59,18 +61,19 @@
                 <option value="Offline">&#xf057; Offline</option>
                 <option value="Unknown">&#xf059; Unknown</option>
             </select>
-            <p id="updatedAutoText">
+            
+            <button id="updatedAutoText">
                 Updates automatically <i class="fas fa-check"></i> <!-- Checkmark icon -->
-            </p>
+            </button>
         </div>
         <!--Printer tabel-->
         <div id = "dashboard">
             <table id="printerTable" style = "display: none;">
                 <thead id="printerTableHeader">
-                <tr><th>Navn <span class="sortable" onclick="sortTable(0, event)">&uarr;</span></th>
-                    <th>Model <span class="sortable" onclick="sortTable(1, event)">&uarr;</span></th>
-                    <th>Adresse <span class="sortable" onclick="sortTable(2, event)">&uarr;</span></th>
-                    <th>Status <span class="sortable" onclick="sortTable(3, event)">&uarr;</span></th>
+                <tr><th>Navn <span class="sortable" onclick="alphabeticalSort(0, event)">&uarr;</span></th>
+                    <th>Model <span class="sortable" onclick="alphabeticalSort(1, event)">&uarr;</span></th>
+                    <th>Adresse <span class="sortable" onclick="alphabeticalSort(2, event)">&uarr;</span></th>
+                    <th>Status <span class="sortable" onclick="alphabeticalSort(3, event)">&uarr;</span></th>
                 </tr>
                 </thead>
                 <tbody id="printerTableBody">

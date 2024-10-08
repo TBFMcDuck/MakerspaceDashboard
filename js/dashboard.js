@@ -503,7 +503,9 @@ function renderGrid(querySnapshot) {
         newCard.appendChild(lastUpdatedElement);
         newCard.appendChild(addressElement);
         newCard.append(placementCodeDiv);
-        newCard.append(printerNoteDiv);
+        if (item.note != "") {
+            newCard.append(printerNoteDiv);
+        }
         if (item.status === "Printing" || item.status === "Paused") {
             newCard.append(timeLeftElement);
         }
