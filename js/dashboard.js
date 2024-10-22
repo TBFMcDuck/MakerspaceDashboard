@@ -657,10 +657,12 @@ function applySearchFilter(input) {
       }
       if (!anyPrinterMatchesQuery) {
           document.getElementById('loading').style.display = 'block';
+          document.getElementById('loading').style.color =  "#e60000";
           document.getElementById('loading').innerHTML = '<i class="fas fa-exclamation-circle"></i> There are no printers matching your search and/or filter.';
       }
       else {
           document.getElementById('loading').style.display = 'none';
+          document.getElementById('loading').style.color =  "black";
           document.getElementById('loading').innerHTML = '(Fetching printer data...)';
       }
   }

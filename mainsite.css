@@ -217,8 +217,10 @@ body {
 
 /* Loading text */
 #loading {
+    color: #000000;
     display: none;
     text-align: center;
+    font-size: 18px;
     padding: 10px 0;
 }
 
