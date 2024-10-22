@@ -187,10 +187,7 @@ function lastUpdatedHTML(updateTime) {
     element.innerHTML = '<p class=printer-bottom-text> Fetched: ' + updateTime+ '</p>';
     return element
 }
-function timeLeftHTML(printTime, timeLeft){
-    let timeLeftDiv = document.createElement("div");
-    timeLeftDiv.className = "timeleftDiv";
-
+function timeLeftFormat(printTime, timeLeft) {
     timeLeft = timeLeft + printTime
 
     let printTimeUnit = "s";
@@ -212,7 +209,13 @@ function timeLeftHTML(printTime, timeLeft){
         }
     }
 
-    timeLeftDiv.innerHTML = '<p class="timeleftText">' + printTime.toFixed(1)+ printTimeUnit + "/" + timeLeft.toFixed(1) + timeLeftUnit + '</p>';
+    return [printTime.toFixed(1)+ printTimeUnit, timeLeft.toFixed(1) + timeLeftUnit]
+}    
+function timeLeftHTML(printTime, timeLeft){
+    let timeLeftDiv = document.createElement("div");
+    timeLeftDiv.className = "timeleftDiv";
+
+    timeLeftDiv.innerHTML = '<p class="timeleftText">' + timeLeftFormat(printTime, timeLeft)[0] + "/" + timeLeftFormat(printTime, timeLeft)[1] + '</p>';
     return timeLeftDiv
 }
 function addressHTML(address) {
@@ -462,6 +465,80 @@ function renderTable(querySnapshot) {
         }
     });
 }
+// Printermodal
+var modal = document.getElementById("printerModal");
+var span = document.getElementsByClassName("close")[0];
+
+function openModal(item) {
+    document.getElementById("modalPlacementCode").innerHTML = item.placementcode;
+    document.getElementById("modalPrinterName").innerText = item.name;
+    document.getElementById("modalPrinterModel").innerText = "Model: " + item.type;
+    // Status
+    let modalStatusHtml = statusHTML(item.status, item.progress, cleanStatus(item));
+    modalStatusHtml.className = "modalStatus";
+    document.getElementById("modalPrinterStatus").innerHTML = modalStatusHtml.outerHTML;
+    document.getElementById("modalLastUpdated").innerHTML = '<p> Last changed: ' + item.updateTime + '</p>';
+    
+    // Create a copy button
+    var copyButton = document.createElement("button");
+    // Icon for button
+    copyButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"/></svg>';
+    copyButton.className = "copyButton";
+    copyButton.onclick = function() {
+        // First copy to clipboard, then show "Copied!" message
+        navigator.clipboard.writeText(item.address).then(() => {
+            // Show "Copied!" message
+            copiedMessage.style.display = 'inline';
+            // Hide after 1 second
+            setTimeout(() => {
+                copiedMessage.style.display = 'none';
+            }, 1000);
+        });
+    }
+
+    // Create "Copied!" melding
+    var copiedMessage = document.createElement("span");
+    copiedMessage.innerText = "Copied!";
+    copiedMessage.className = "copiedMessage";
+    copiedMessage.style.display = 'none'; 
+
+    document.getElementById("modalAddress").innerHTML = item.address;
+    document.getElementById("modalAddress").appendChild(copyButton);
+    document.getElementById("modalAddress").appendChild(copiedMessage);
+    document.getElementById("modalPrinterTemps").innerHTML = 'end: Na°C bed: Na°C'
+    document.getElementById("modalGoToOctoButton").href = item.address;
+    document.getElementById("modalGoToOctoButton").target = "_blank";
+    let note = item.note;
+    if (note === "") {
+        note = "No note.";
+    }
+    document.getElementById("modalPrinterNote").innerHTML = 'Note: ' + note;
+    if (item.status === "Printing" || item.status === "Paused") {
+        document.getElementById("modalLoadedModel").innerHTML = 'Printing: ' + 'modelPlaceHolderText.gcode';
+        let timeLeftHTMLElement = document.createElement("div");
+        timeLeftHTMLElement.className = "modalTimeLeft";
+        timeLeftHTMLElement.innerHTML = '<p style="margin:0px;">' + timeLeftFormat(item.printTime, item.timeLeft)[0] + "/" + timeLeftFormat(item.printTime, item.timeLeft)[1] + '</p>';
+        document.getElementById("modalTimeLeft").innerHTML = timeLeftHTMLElement.outerHTML;
+    } else {
+        document.getElementById("modalLoadedModel").innerHTML = 'Loaded: ' + 'modelPlaceHolderText.gcode';
+        document.getElementById("modalTimeLeft").innerHTML = "";
+    }
+
+    // Only display is wider than 900px
+    if (window.innerWidth > 900) {
+        modal.style.display = "block";
+    }
+}
+
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
 // Displaying in grid mode
 function renderGrid(querySnapshot) {
     // Hide loading text
@@ -508,6 +585,10 @@ function renderGrid(querySnapshot) {
         }
         if (item.status === "Printing" || item.status === "Paused") {
             newCard.append(timeLeftElement);
+        }
+        
+        newCard.onclick = function() {
+            openModal(item);
         }
 
         printergrid.appendChild(newCard);

@@ -85,6 +85,24 @@
         <!--Loading text that will be displayed while printer data is being fetched.-->
         <div id="loading" style="display: block;">(Fetching printer data...)</div>
 
+        <!--This modal is shown when the user clicks on a printer in the grid, it shows some additional information-->
+        <div id="printerModal" class = "modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p id="modalPlacementCode"></p>
+                <h3 id="modalPrinterName"></h3>
+                <h4 id="modalPrinterModel"></h4>
+                <div id="modalPrinterStatus"></div>
+                <div id="modalLastUpdated"></div>
+                <div id="modalAddress"></div>
+                <p id="modalPrinterTemps"></p>
+                <p id="modalPrinterNote"></p>
+                <p id="modalLoadedModel"></p>
+                <div id="modalTimeLeft"></div>
+                <a id="modalGoToOctoButton"><i class="fas fa-external-link-alt" style = "color:white;"></i></a>
+            </div>
+        </div>
+
         <!-- Firebase stuff -->
         <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
