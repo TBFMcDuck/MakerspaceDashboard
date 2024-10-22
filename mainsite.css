@@ -652,6 +652,7 @@ body {
         display: none;
     }
 
+    /* Display mobile title */
     #mobiletitle {
         display: inline;
     }
@@ -668,6 +669,8 @@ body {
 
     .navbar.active {
         display: flex;
+        padding-left: 10px;
+        margin:10px;
     }
 
     .hamburger-menu {
@@ -712,9 +715,9 @@ body {
 }
 
 /* Make scrollbar thin on the side */
-/* For Chrome and Safari */
+/* Chrome and safari */
 ::-webkit-scrollbar {
-    width: 10px; /* Adjust as needed */
+    width: 10px;
 }
 
 ::-webkit-scrollbar-track {
