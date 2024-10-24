@@ -505,7 +505,7 @@ function openModal(item) {
     document.getElementById("modalAddress").innerHTML = item.address;
     document.getElementById("modalAddress").appendChild(copyButton);
     document.getElementById("modalAddress").appendChild(copiedMessage);
-    document.getElementById("modalPrinterTemps").innerHTML = 'end: Na°C bed: Na°C'
+    document.getElementById("modalPrinterTemps").innerHTML = 'tool: ' + item.toolTemp + ' °C' + ' | bed: ' + item.bedTemp +  ' °C'
     document.getElementById("modalGoToOctoButton").href = item.address;
     document.getElementById("modalGoToOctoButton").target = "_blank";
     let note = item.note;
@@ -514,13 +514,13 @@ function openModal(item) {
     }
     document.getElementById("modalPrinterNote").innerHTML = 'Note: ' + note;
     if (item.status === "Printing" || item.status === "Paused") {
-        document.getElementById("modalLoadedModel").innerHTML = 'Printing: ' + 'modelPlaceHolderText.gcode';
+        document.getElementById("modalLoadedModel").innerHTML = 'Printing: ' + item.model;
         let timeLeftHTMLElement = document.createElement("div");
         timeLeftHTMLElement.className = "modalTimeLeft";
         timeLeftHTMLElement.innerHTML = '<p style="margin:0px;">' + timeLeftFormat(item.printTime, item.timeLeft)[0] + "/" + timeLeftFormat(item.printTime, item.timeLeft)[1] + '</p>';
         document.getElementById("modalTimeLeft").innerHTML = timeLeftHTMLElement.outerHTML;
     } else {
-        document.getElementById("modalLoadedModel").innerHTML = 'Loaded: ' + 'modelPlaceHolderText.gcode';
+        document.getElementById("modalLoadedModel").innerHTML = 'Loaded: ' + item.model;
         document.getElementById("modalTimeLeft").innerHTML = "";
     }
 

@@ -1,0 +1,146 @@
+/* Cards */
+.printer-card {
+    background: #292929;
+    text-align: center;
+    border-radius: 10px;
+    margin:10px;
+    width:210px;
+    height: 250px;
+    flex-grow: 1;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+}
+
+.printer-card:hover {
+    transform: translateY(-5px); /* Move the card up */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Add shadow for hovering effect */
+}
+
+.printer-card h3 {
+    color: white;
+}
+
+.printer-card h4 {
+    color: #909090;
+}
+
+.printer-status-card {
+    font-size: medium;
+    font-weight: bold;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    padding: 0px;
+    height: 40px;
+}
+
+.printer-bottom-text {
+    color: #909090;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%); 
+}
+
+.adressBottomText {
+    color: #484848;
+    font-size: 12px;
+    position: absolute;
+    bottom: -5px;
+    left: 50%; 
+    transform: translateX(-50%); 
+}
+
+.printerNote {
+    color:#909090;
+    position: absolute;
+    top:15px;
+    right: 15px;
+}
+
+.printerNote:hover {
+    cursor: pointer;
+}
+
+.printerNoteImportant {
+    color:#FF4500;
+    position: absolute;
+    top:15px;
+    right: 15px;
+    cursor: pointer;
+}
+
+/* Tooltip container */
+.printernoteHover {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    right: 0px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding-left: 4%;
+    padding-right: 4%;
+    border-radius: 5px;
+    border: #222222 solid 3px;
+    z-index: 1;
+    width: 200px;
+}
+
+/* Tooltip arrow */
+.printernoteHover::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 90%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+}
+
+/* Status column */
+.tooltip {
+    cursor: pointer;
+}
+.status-cell {
+    position: relative;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+}
+
+.positionCodeText {
+    color: #909090;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.placementCodeDiv {
+    position: absolute;
+    top:3px;
+    left: 15px;
+}
+
+.timeleftText {
+    color: #909090;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.timeleftDiv {
+    position: absolute;
+    align-items: center;
+    top: 53%;
+    width: 100%;
+}
+
+.statusText {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}

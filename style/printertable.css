@@ -1,0 +1,27 @@
+/* Table of printer data */
+#printerTable {
+    margin-top: 10px;
+    width: 100%;
+    border-collapse: collapse;
+    color:white;
+}
+
+#printerTable th, #printerTable td {
+    border: 1px solid #000000;
+    padding: 8px;
+    text-align: left;
+}
+
+#printerTable tr:nth-child(even) {
+    background-color: #292929;
+    color:white;
+}
+
+#printerTable th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#printerTable th:nth-child(4) {
+    width: 20%;
+}
