@@ -113,21 +113,7 @@ function updateLocalQuery(updatedQuery) {
 // ------------------------------------------------------
 // Decrease reads by not updating when the user is away
 // ------------------------------------------------------
-// Listen for messages from other tabs, if another tab is active, make this one in active
-channel.onmessage = (event) => {
-    if (event.data === "active") {
-        shouldUpdate = false;
-        if (unsubscribe) {
-            unsubscribe();
-            unsubscribe = null;
-            updatingText.innerHTML = 'Updates paused because other tab is active. <i class="fas fa-pause-circle"></i>';
-            updatingTextBtmBar.innerHTML = 'Updates paused because other tab is active. <i class="fas fa-pause-circle"></i>';
-            document.title = '(inactive) Makerspace Dashboard';
-        }
-    }
-};
-// Handle when the tab becomes inactive manually by the user
-window.addEventListener('blur', () => {
+function updatesPaused() {
     shouldUpdate = false;
     if (unsubscribe) {
         unsubscribe();
@@ -136,14 +122,25 @@ window.addEventListener('blur', () => {
         updatingTextBtmBar.innerHTML = 'Updates paused because other tab is active. <i class="fas fa-pause-circle"></i>';
         document.title = '(inactive) Makerspace Dashboard';
     }
+}
+
+// Listen for messages from other tabs, if another tab is active, make this one in active
+channel.onmessage = (event) => {
+    if (event.data === "active") {
+        updatesPaused();
+    }
+};
+// Handle when the tab becomes inactive manually by the user
+window.addEventListener('blur', () => {
+    updatesPaused();
 });
 // Send a message when this tab becomes active to inactive other potensially open tabs
 window.addEventListener('focus', () => {
     shouldUpdate = true;
     channel.postMessage('active');
     subscribeToFirestore();
-    updatingText.innerHTML = 'Updates automatically <i class="fas fa-check"></i>';
-    updatingTextBtmBar.innerHTML = 'Updates automatically <i class="fas fa-check"></i>';
+    updatingText.innerHTML = 'Updating automatically <i class="fas fa-check"></i>';
+    updatingTextBtmBar.innerHTML = 'Updating automatically <i class="fas fa-check"></i>';
     document.title = 'Makerspace Dashboard';
 });
 
@@ -153,7 +150,7 @@ window.addEventListener('focus', () => {
 // Handy functions
 function shortenName(name, maxLength) {
     if (name.length > maxLength) {
-        return name.substring(0, 11) + "."
+        return name.substring(0, maxLength-1) + "."
     }
     else {
         return name

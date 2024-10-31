@@ -32,12 +32,12 @@
     gap: 5px;
     grid-template-columns: .4fr 1fr 1fr 1fr .2fr;
     grid-template-rows: .5fr .4fr .4fr .4fr .5fr;
-    grid-template-areas: "p pn pn . c" 
-                         ". pm pm . ."
+    grid-template-areas: "p pn pn pn c" 
+                         ". pm pm pm ."
                          "s s s pt pt"
                          "s s s n n"
                          "lm lm tl . ."
-                         "f f a a b";
+                         "f f a . b";
     animation: modalFadeIn 0.5s ease-out; 
 }
 
@@ -139,8 +139,6 @@
 
 #modalLastUpdated {
     grid-area: f;
-    position: relative;
-    top: 50%;
 }
 
 #modalGoToOctoButton {
@@ -165,7 +163,6 @@
     background-color: #323232;
     padding: 10px;
     font-size:20px;
-    width: 70%;
     border: 4px #2c2c2c solid;
     border-radius: 5px;
     grid-area: a;
